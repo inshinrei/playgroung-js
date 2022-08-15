@@ -1,0 +1,33 @@
+.wrapper {
+    --gap: 1rem;
+
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    gap: var(--gap);
+}
+
+.list {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-around;
+    min-width: 100%;
+    gap: var(--gap);
+
+    animation: scroll 10s linear infinite;
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(calc(-100% - var(--gap)));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .list {
+        animation-play-state: paused !important;
+    }
+}
