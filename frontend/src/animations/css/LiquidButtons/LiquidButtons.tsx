@@ -1,6 +1,6 @@
 import React from 'react'
 
-import styles from './LiquidButtons.module.css'
+import styles from './LiquidButtons.module.scss'
 
 function LiquidButtons() {
   return (

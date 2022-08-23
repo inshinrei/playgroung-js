@@ -1,0 +1,72 @@
+:root {
+    --c-active: #275efe;
+    --c-active-inner: #ffffff;
+
+    --c-default: #d2d6e9;
+    --c-default-dark: #c7cbdf;
+    --c-black: #1b1b22;
+}
+
+.radio, .checkbox, .switch {
+    display: table;
+    position: relative;
+
+    border-radius:
+            var(--border-radius, 12px)
+            var(--border-radius-corner, 12px)
+            var(--border-radius, 12px)
+            var(--border-radius, 12px);
+
+    input {
+        appearance: none;
+        outline: none;
+        border: none;
+        border-radius: inherit;
+
+        width: var(--input-width, 24px);
+        height: var(--input-height, 24px);
+
+        display: block;
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+
+        background: var(--input-background, none);
+    }
+
+    svg {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+
+        pointer-events: none;
+        fill: var(--c-active-inner);
+
+        transform: scale(1.01) translateZ(0);
+    }
+}
+
+.radio, .checkbox {
+    input {
+        --border-color: var(--c-default);
+        --border-width: 2px;
+
+        box-shadow: inset 0 0 0 var(--border-width) var(--border-color);
+
+        &:checked {
+            --border-color: var(--c-active);
+        }
+
+        &:not(:checked) {
+            transition: box-shadow .25s;
+
+            &:hover {
+                --border-width: 3px;
+                --border-color: var(--c-active);
+            }
+        }
+    }
+}
