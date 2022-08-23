@@ -1,3 +1,1 @@
 # fe-bootcamp
-w
-c
