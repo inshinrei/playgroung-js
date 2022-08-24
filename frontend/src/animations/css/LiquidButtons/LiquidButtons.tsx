@@ -30,7 +30,7 @@ function LiquidButtons() {
 
         <svg viewBox="0 0 38 24" filter="url(#goo)">
           <circle className={styles.default} cx="12" cy="12" r="8" />
-          <circle className={styles.dor} cx="26" cy="12" r="8" />
+          <circle className={styles.dot} cx="26" cy="12" r="8" />
         </svg>
       </label>
 
