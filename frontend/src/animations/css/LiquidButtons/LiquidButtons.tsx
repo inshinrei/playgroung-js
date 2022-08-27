@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import styles from './LiquidButtons.module.scss'
+import { registerEventListeners } from './utils'
 
 function LiquidButtons() {
+  useEffect(() => {
+    registerEventListeners()
+  }, [])
+
   return (
-    <div className={styles.wrapper}>
+    <div>
       <label className={styles.radio}>
         <input type="radio" name="r" value="1" checked />
 
