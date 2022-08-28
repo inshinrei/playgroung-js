@@ -1,5 +1,5 @@
 import gsap from 'gsap'
-import { getCSSVar } from '../../../utils/css'
+import { getCSSVar } from 'utils/css'
 
 const { to, set, fromTo } = gsap
 

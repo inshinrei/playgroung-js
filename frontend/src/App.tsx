@@ -1,13 +1,8 @@
 import React from 'react'
 import './App.css'
-import LiquidButtons from './animations/css/LiquidButtons/LiquidButtons'
 
 function App() {
-  return (
-    <div className="App">
-      <LiquidButtons />
-    </div>
-  )
+  return <div className="App"></div>
 }
 
 export default App
