@@ -10,6 +10,8 @@
     "@types/node": "^16.11.47",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "dat.gui": "^0.7.9",
+    "gl-matrix": "^3.4.3",
     "gsap": "^3.11.0",
     "lodash.last": "^3.0.0",
     "lodash.times": "^4.3.2",
