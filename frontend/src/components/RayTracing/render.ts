@@ -41,6 +41,14 @@ function randomOnUnitSphere(): point3 {
   return vec3.normalize(point, point)
 }
 
+function getColorDiff(color1: color, color2: color): number {
+  return (
+    Math.abs(color1[0] - color2[0]) +
+    Math.abs(color1[1] - color2[1]) +
+    Math.abs(color1[2] - color2[2])
+  )
+}
+
 function refract(unitDirection: vec3, cosTheta: number, normal: vec3, etaiOverEtat: number): vec3 {
   const rOutPerp = vec3.scale(vec3.create(), normal, cosTheta)
 
@@ -209,7 +217,7 @@ function getColorFromScene(
           ) {
             dir = reflect(dirNormalized, nearestHit.normal)
           } else {
-            dir = refract(dirNormalized, cosTheta, nearestHit.normat, refractionRatio)
+            dir = refract(dirNormalized, cosTheta, nearestHit.normal, refractionRatio)
           }
 
           break
@@ -239,3 +247,5 @@ function getColorFromScene(
     vec3.scale(vec3.create(), vec3.fromValues(0.5, 0.7, 1), tt)
   )
 }
+
+export function render(imageData: ImageData, options: RenderOptions) {}
