@@ -3,6 +3,7 @@ import { vec3 } from 'gl-matrix'
 
 import { point3, pointAtRay, Ray } from './ray'
 import { color, Hit, MaterialType, ObjectType, Scene, SphereObject } from './types'
+import { scene } from './scene'
 
 import type { RenderOptions } from './options'
 
@@ -248,4 +249,142 @@ function getColorFromScene(
   )
 }
 
-export function render(imageData: ImageData, options: RenderOptions) {}
+export function render(imageData: ImageData, options: RenderOptions) {
+  const { width, height, data } = imageData
+  const { avgMixer, diffThreshold, highlightDiff, maxDepth } = options
+
+  let all = 0,
+    overDiff = 0
+
+  function writePixel(color: Readonly<vec3>, offset: number): void {
+    // @ts-ignore
+    let [r, g, b] = color.values()
+
+    if (options.gamma !== 1) {
+      const power = 1 / options.gamma
+
+      r = r ** power
+      g = g ** power
+      b = b ** power
+    }
+
+    const ir = Math.floor(255.99 * r),
+      ig = Math.floor(255.999 * g),
+      ib = Math.floor(255.999 * b)
+
+    data.set([ir, ig, ib, 255], offset)
+  }
+
+  function getColorAt(offset: number): color {
+    const pixelData = data.slice(offset, offset + 4)
+    return [pixelData[0] / 256, pixelData[1] / 256, pixelData[2] / 256]
+  }
+
+  const aspectRatio = width / height
+
+  const viewportHeight = 2.0,
+    viewportWidth = aspectRatio * viewportHeight,
+    focalLength = 1.0
+
+  const origin = vec3.fromValues(0, 0, 0),
+    horizontal = vec3.fromValues(viewportWidth, 0, 0),
+    vertical = vec3.fromValues(0, viewportHeight, 0)
+
+  const lowerLeftCorner = vec3.subtract(
+    vec3.create(),
+    origin,
+    vec3.fromValues(viewportWidth / 2, viewportHeight / 2, focalLength)
+  )
+
+  function getColorByXY(x: number, y: number) {
+    const u = x / width,
+      v = 1 - y / height
+
+    const dir = vec3.create()
+
+    vec3.add(dir, lowerLeftCorner, vec3.scale(vec3.create(), horizontal, u))
+    vec3.add(dir, dir, vec3.scale(vec3.create(), vertical, v))
+    vec3.sub(dir, dir, origin)
+
+    const r = { origin, dir }
+
+    return getColorFromScene(options, scene, r, 0, Infinity, maxDepth)
+  }
+
+  const fillRedPixels: { x: number; y: number }[] = []
+
+  for (let y = 0; y < height; y += 2) {
+    for (let x = 0; x < width; x += 2) {
+      const avgColor = getColorByXY(x + 0.5, y + 0.5)
+      let sumDiff = 0
+
+      if (y > 0) {
+        const upColor = getColorAt(((y - 1) * width + x + 1) * 4)
+        sumDiff += getColorDiff(avgColor, upColor)
+      }
+
+      if (x > 0) {
+        const leftColor = getColorAt((y * width + x - 1) * 4)
+        sumDiff += getColorDiff(avgColor, leftColor)
+      }
+
+      let color1: color, color2: color, color3: color, color4: color
+
+      if (sumDiff > diffThreshold) {
+        overDiff++
+
+        color1 = getColorByXY(x, y)
+        color2 = getColorByXY(x + 1, y)
+        color3 = getColorByXY(x, y + 1)
+        color4 = getColorByXY(x + 1, y + 1)
+
+        const avgColor = vec3.create()
+
+        vec3.add(avgColor, avgColor, color1)
+        vec3.add(avgColor, avgColor, color2)
+        vec3.add(avgColor, avgColor, color3)
+        vec3.add(avgColor, avgColor, color4)
+
+        vec3.scale(avgColor, avgColor, 0.25)
+
+        vec3.lerp(color1, color1, avgColor, avgMixer)
+        vec3.lerp(color2, color2, avgColor, avgMixer)
+        vec3.lerp(color3, color3, avgColor, avgMixer)
+        vec3.lerp(color4, color4, avgColor, avgMixer)
+
+        if (highlightDiff) {
+          fillRedPixels.push({ x, y })
+        }
+      } else {
+        color1 = avgColor
+        color2 = avgColor
+        color3 = avgColor
+        color4 = avgColor
+      }
+
+      all++
+
+      writePixel(color1, (y * width + x) * 4)
+      writePixel(color2, (y * width + x + 1) * 4)
+      writePixel(color3, ((y + 1) * width + x) * 4)
+      writePixel(color4, ((y + 1) * width + x + 1) * 4)
+    }
+  }
+
+  for (const { x, y } of fillRedPixels) {
+    const red = [1, 0, 0] as const
+
+    writePixel(red, (y * width + x) * 4)
+    writePixel(red, (y * width + x + 1) * 4)
+    writePixel(red, ((y + 1) * width + x) * 4)
+    writePixel(red, ((y + 1) * width + x + 1) * 4)
+  }
+
+  console.log('====================')
+  console.log(
+    `renderResolution=${width}x${height} basePixelsCount=${all} needDetails=${overDiff} needDetailsRatio=${(
+      (overDiff * 100) /
+      all
+    ).toFixed(2)}% totalPixels=${all - overDiff + overDiff * 4}`
+  )
+}
