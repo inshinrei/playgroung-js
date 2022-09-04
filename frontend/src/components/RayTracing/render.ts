@@ -1,10 +1,10 @@
 // TODO?: use 32-bit signed integer since it's faster in JS
-import {vec3} from 'gl-matrix'
+import { vec3 } from 'gl-matrix'
 
-import {point3, pointAtRay, Ray} from './ray'
-import {color, Hit, MaterialType, ObjectType, Scene, SphereObject} from './types'
+import { point3, pointAtRay, Ray } from './ray'
+import { color, Hit, MaterialType, ObjectType, Scene, SphereObject } from './types'
 
-import type {RenderOptions} from './options'
+import type { RenderOptions } from './options'
 
 function getSquaredLength(vec: vec3): number {
   return vec[0] ** 2 + vec[1] ** 2 + vec[2] ** 2
@@ -147,11 +147,12 @@ function getColorFromScene(
     //
     // return color
 
-    const probes = depth === options.maxDepth ? options.diffuseRaysProbes : options.diffuseSecondRaysProbes
+    const probes =
+      depth === options.maxDepth ? options.diffuseRaysProbes : options.diffuseSecondRaysProbes
     const accColor = vec3.create()
 
     if (probes === 0) {
-      return [0. 0,0]
+      return [0, 0, 0]
     }
 
     for (let i = 0; i < probes; i++) {
@@ -160,7 +161,9 @@ function getColorFromScene(
 
       switch (material.type) {
         case MaterialType.SMOOTH: {
-          const randomPoint = options.useTrueLambertian ? randomOnUnitSphere() : randomInUnitSphere()
+          const randomPoint = options.useTrueLambertian
+            ? randomOnUnitSphere()
+            : randomInUnitSphere()
 
           dir = vec3.add(vec3.create(), nearestHit.normal, randomPoint)
 
@@ -171,13 +174,68 @@ function getColorFromScene(
           break
         }
 
-        // ????
         case MaterialType.METAL: {
+          dir = reflect(vec3.normalize(vec3.create(), ray.dir), nearestHit.normal)
 
+          if (material.fuzz > 0) {
+            const fuzz = vec3.scale(vec3.create(), randomInUnitSphere(), material.fuzz)
+            vec3.add(dir, dir, fuzz)
+          }
+
+          if (vec3.dot(dir, nearestHit.normal) <= 0) {
+            continue
+          }
+
+          break
         }
 
-        case MaterialType.DIELECTRIC: {}
+        case MaterialType.DIELECTRIC: {
+          const refractionRatio = nearestHit.isFrontFace
+            ? 1.0 / material.refractionIndex
+            : material.refractionIndex
+
+          const dirNormalized = vec3.normalize(vec3.create(), ray.dir)
+
+          const cosTheta = Math.min(
+            vec3.dot(vec3.scale(vec3.create(), dirNormalized, -1), nearestHit.normal),
+            1
+          )
+
+          const sinTheta = Math.sqrt(1 - cosTheta ** 2)
+
+          if (
+            refractionRatio * sinTheta > 1 ||
+            reflectance(cosTheta, refractionRatio) > Math.random()
+          ) {
+            dir = reflect(dirNormalized, nearestHit.normal)
+          } else {
+            dir = refract(dirNormalized, cosTheta, nearestHit.normat, refractionRatio)
+          }
+
+          break
+        }
       }
+
+      const newRay = {
+        origin: nearestHit.point,
+        dir,
+      }
+
+      const tracedColor = getColorFromScene(options, scene, newRay, 0.001, Infinity, depth - 1)
+
+      vec3.mul(tracedColor, tracedColor, material.color)
+      vec3.add(accColor, accColor, tracedColor)
     }
+
+    return vec3.scale(accColor, accColor, 1 / probes)
   }
+
+  const unitDirection = vec3.normalize(vec3.create(), ray.dir)
+  const tt = 0.5 * (unitDirection[1] + 1)
+
+  return vec3.add(
+    vec3.create(),
+    vec3.scale(vec3.create(), vec3.fromValues(1, 1, 1), 1 - tt),
+    vec3.scale(vec3.create(), vec3.fromValues(0.5, 0.7, 1), tt)
+  )
 }
