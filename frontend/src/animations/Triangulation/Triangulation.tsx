@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import styles from './Triangulation.module.scss'
+import './Triangulation.scss'
 import { attachAnimation } from './util'
 
 function Triangulation() {
@@ -8,7 +8,7 @@ function Triangulation() {
     attachAnimation()
   }, [])
 
-  return <div className={styles.wrapper} />
+  return <div className="wrapper" />
 }
 
 export default Triangulation

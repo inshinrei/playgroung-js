@@ -1,9 +1,7 @@
 import Delaunator from 'delaunator'
 
-import styles from './Triangulation.module.scss'
-
 export function attachAnimation() {
-  const wrapper = document.querySelector(styles.wrapper)
+  const wrapper = document.querySelector('.wrapper')
   const root = document.createElement('div')
 
   const points = []
@@ -49,7 +47,7 @@ export function attachAnimation() {
 
     const imageWrapper = document.createElement('div')
 
-    imageWrapper.classList.add(styles.image)
+    imageWrapper.classList.add('image')
     imageWrapper.style.clipPath = `polygon(${polygon}`
     imageWrapper.style.transformOrigin = `${centerX}% ${centerY}%`
     imageWrapper.style.animationDelay = `${Math.random() * 500}ms`
@@ -57,6 +55,6 @@ export function attachAnimation() {
     root.appendChild(imageWrapper)
   }
 
-  root.classList.add(styles.root)
+  root.classList.add('root')
   wrapper?.appendChild(root)
 }
