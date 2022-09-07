@@ -111,6 +111,7 @@
     background-image: url("https://unsplash.com/photos/Vl01e7aXHaQ");
     background-size: 0 0;
     background-repeat: no-repeat;
+    background-color: yellow;
 
     will-change: transform, opacity;
     animation: moveWrapper 10s linear infinite;
@@ -128,6 +129,7 @@
     background-image: url("https://unsplash.com/photos/PwsTaHyuvgY");
     background-position: 50% 50%;
     background-size: cover;
+    background-color: grey;
 
     will-change: transform;
     animation: moveTriangle 10s linear infinite;
