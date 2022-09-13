@@ -17,6 +17,7 @@
     "gsap": "^3.11.0",
     "lodash.last": "^3.0.0",
     "lodash.times": "^4.3.2",
+    "ramda": "^0.28.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
@@ -53,6 +54,7 @@
     "@types/lodash": "^4.14.183",
     "@types/lodash.last": "^3.0.7",
     "@types/lodash.times": "^4.3.7",
+    "@types/ramda": "^0.28.15",
     "prettier": "^2.7.1",
     "typescript-plugin-css-modules": "^3.4.0"
   }
