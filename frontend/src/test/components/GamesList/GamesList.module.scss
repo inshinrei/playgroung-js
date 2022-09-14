@@ -1,0 +1,54 @@
+.root {
+  width: 100vw;
+
+  padding: 40px;
+
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.filtersWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  & > * {
+    min-width: 150px;
+  }
+}
+
+.list {
+  margin-top: 30px !important;
+
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.listItem {
+  --size: 150px;
+
+  width: var(--size);
+  height: var(--size);
+
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 3px #6a80f5;
+  cursor: pointer;
+
+  transition: box-shadow .5s;
+  will-change: box-shadow;
+
+  &:hover {
+    box-shadow: 0 0 10px #6a80f5;
+  }
+}
+
+.button {
+  margin: 30px auto 0 auto;
+}

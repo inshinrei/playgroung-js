@@ -11,7 +11,7 @@ import { KEY_CODES } from '../../constants/keyCodes'
 
 type Props = {
   items: any[]
-  value: string | string[]
+  value?: string | string[] | undefined
   onSelect: Function
   valueField: string
   className?: string
