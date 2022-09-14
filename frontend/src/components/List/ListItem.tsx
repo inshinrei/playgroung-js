@@ -2,8 +2,8 @@ import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react
 import styles from './ListItem.module.scss'
 
 type Props = {
-  children: ReactNode
-  className: string
+  children?: ReactNode
+  className?: string
   onItemClick?: MouseEventHandler
   onKeyDown?: KeyboardEventHandler
 }
