@@ -37,7 +37,7 @@ export function useUnmount(fn: () => any): void {
   useEffectOnce(() => () => fnRef.current())
 }
 
-export function useRefState<S>(initialState: S | (() => S)): [S, Dispatch<SetStateAction<S>>] {
+export function useRafState<S>(initialState: S | (() => S)): [S, Dispatch<SetStateAction<S>>] {
   const frame = useRef(0)
   const [state, setState] = useState(initialState)
 
