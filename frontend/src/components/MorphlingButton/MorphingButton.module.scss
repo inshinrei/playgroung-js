@@ -1,6 +1,23 @@
+:root {
+  --hue: 223;
+
+  --bg1: hsl(var(--hue), 10%, 90%);
+  --bg2: hsl(var(--hue), 10%, 80%);
+
+  --fg1: hsl(var(--hue), 10%, 10%);
+  --fg2: hsl(var(--hue), 10%, 20%);
+
+  --primary: hsl(var(--hue), 90%, 55%);
+  --secondary: hsl(var(--hue), 90%, 45%);
+
+  font-size: calc(20px + (40 - 20) * (100vw - 320px) / (1280 - 320));
+}
+
 button, button > * {
   border: 0;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
+
