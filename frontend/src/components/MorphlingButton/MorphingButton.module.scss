@@ -20,4 +20,46 @@ button, button > * {
   padding: 0;
 }
 
+.button {
+  background-color: transparent;
+  border-radius: 1.5em;
 
+  display: block;
+  position: relative;
+  width: 7.5em;
+  height: 3em;
+  transition: width 0.3s ease-in-out;
+  will-change: width;
+
+  &:not(:disabled):active {
+    transform: translateY(0.1em);
+  }
+
+  &:not(:disabled):focus .buttonText,
+  &:not(:disabled):hover .buttonText {
+    background-color: var(--secondary);
+  }
+}
+
+.buttonText {
+  background-color: var(--primary);
+  border-radius: inherit;
+  color: hsl(0, 0%, 100%);
+
+  display: inline-block;
+  padding: 0.75em 1.5em;
+
+  transition: background-color 0.15s linear, color 0.15s 0.3s ease-in-out;
+  width: 100%;
+  will-change: background-color, color;
+}
+
+.buttonProgress {
+  overflow: visible;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3em;
+  height: 3em;
+  visibility: hidden;
+}

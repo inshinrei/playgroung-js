@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './MorphingButton.module.scss'
 
 interface Props {
   text: string
@@ -7,7 +8,7 @@ interface Props {
 function MorphingButton(props: Props) {
   /* progressive duration */
   return (
-    <button className="btn" type="button">
+    <button className={styles.button} type="button">
       <span className="btn__text">{props.text}</span>
 
       <svg className="btn__progress" viewBox="0 0 48 48" width="48px" height="48px">
