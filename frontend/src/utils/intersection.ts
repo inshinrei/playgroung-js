@@ -29,4 +29,21 @@ export class IntersectionObserver implements IIntersectionObserver {
       rootMargin: `${(this.header as any)?.offsetHeight * -1}px`,
     }
   }
+
+  private getTargetSection = (entry: any) => {
+    const index = sections.findIndex(section => section == entry.target)
+
+    if (index >= sections.length - 1) {
+      return entry.target
+    } else {
+      return sections[index + 1]
+    }
+  }
+
+  private updateColors = (target: any) => {
+    const theme = target?.dataset?.section
+    this.header?.setAttribute('data-theme', theme)
+  }
+
+  private shouldUpdate = (entry: any) => {}
 }
