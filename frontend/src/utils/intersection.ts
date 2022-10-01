@@ -17,6 +17,9 @@ export class IntersectionObserver implements IIntersectionObserver {
   private sections: NodeListOf<Element> | [] = document.querySelectorAll('[data-section]') ?? []
   private headerLinks: NodeListOf<Element> | [] = document.querySelectorAll('[data-link]') ?? []
 
+  prevYPosition = 0
+  direction: 'up' | 'down' = 'up'
+
   private options: IntersectionObserverOptions = {
     rootMargin: '0px',
     threshold: 0,
@@ -45,5 +48,15 @@ export class IntersectionObserver implements IIntersectionObserver {
     this.header?.setAttribute('data-theme', theme)
   }
 
-  private shouldUpdate = (entry: any) => {}
+  private shouldUpdate = (entry: any) => {
+    if (this.direction === 'down' && !entry?.isIntersecting) {
+      return true
+    }
+
+    if (this.direction === 'up' && entry?.isIntersecting) {
+      return true
+    }
+
+    return false
+  }
 }
