@@ -59,4 +59,22 @@ export class IntersectionObserver implements IIntersectionObserver {
 
     return false
   }
+
+  private updateMarker = (target: any) => {
+    const { id } = target
+
+    if (!id) {
+      return
+    }
+
+    let link = this.headerLinks.find((link: Element) => link.getAttribute('href') === `#${id}`)
+    link = link || headerLinks[0]
+
+    const distanceFromLeft = link.getBoundingClientRect().left
+
+    this.header?.style.setProperty('--markerWidth', `${link.clientWidth}px`)
+    this.header?.style.setProperty('--markerLeft', `${distanceFromLeft}px`)
+  }
+
+  public onIntersect = (entries: any[]) => {}
 }
