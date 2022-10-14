@@ -1,0 +1,9 @@
+.row_single {
+  display: grid;
+  grid-template-columns: repeat(28, 8px);
+  grid-template-rows: 32px;
+}
+
+.row_icon {
+  grid-column-end: span 4;
+}
