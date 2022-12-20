@@ -16,3 +16,10 @@ function call<T extends [unknown, string, ...unknown[]], R>(
 function is<T>(a: T, ...b: [T, ...T[]]): boolean {
   return b.every((_) => _ === a);
 }
+
+class RequestBuilder {
+  protected data: object | null = null;
+  protected method: "get" | "post" | null = null;
+
+  setMethod(method: "get" | "post") {}
+}
