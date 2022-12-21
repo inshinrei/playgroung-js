@@ -23,3 +23,10 @@ class RequestBuilder {
 
   setMethod(method: "get" | "post") {}
 }
+
+type None = unknown;
+
+interface Option<T> {
+  flatMap<U>(f: (value: T) => None): None;
+  flatMap<U>(f: (value: T) => Option<U>): Option<U>;
+}
