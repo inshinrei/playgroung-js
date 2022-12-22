@@ -31,3 +31,7 @@ interface Option<T> {
   flatMap<U>(f: (value: T) => Option<U>): Option<U>
   getOrElse(value: T): T
 }
+
+declare class API {
+  getLoggedInUserID(): Option<unknown>
+}
