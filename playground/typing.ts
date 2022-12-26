@@ -34,4 +34,5 @@ interface Option<T> {
 
 declare class API {
   getLoggedInUserID(): Option<unknown>
+  getFriendIDs(userID: unknown): Option<unknown[]>
 }
