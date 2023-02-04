@@ -17,6 +17,7 @@
     "gsap": "^3.11.0",
     "js-cookie": "^3.0.1",
     "lodash.last": "^3.0.0",
+    "lodash.shuffle": "^4.2.0",
     "lodash.times": "^4.3.2",
     "ramda": "^0.28.0",
     "react": "^18.2.0",
