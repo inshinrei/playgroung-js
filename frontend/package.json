@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/delaunator": "^5.0.0",
     "@types/jest": "^27.5.2",
+    "@types/lodash.shuffle": "^4.2.7",
     "@types/node": "^16.11.47",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
@@ -54,7 +55,7 @@
   "devDependencies": {
     "@types/dat.gui": "^0.7.7",
     "@types/js-cookie": "^3.0.2",
-    "@types/lodash": "^4.14.183",
+    "@types/lodash": "^4.14.191",
     "@types/lodash.last": "^3.0.7",
     "@types/lodash.times": "^4.3.7",
     "@types/ramda": "^0.28.15",
