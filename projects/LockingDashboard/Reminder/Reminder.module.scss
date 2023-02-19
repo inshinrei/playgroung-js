@@ -1,0 +1,14 @@
+.reminder {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.reminder > div {
+  display: inline-flex;
+}
+
+.reminder > span {
+  color: rgba(white, 0.8);
+  font-size: 1.25em;
+}
