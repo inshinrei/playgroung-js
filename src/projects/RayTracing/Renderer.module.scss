@@ -1,0 +1,12 @@
+.root {
+  position: relative;
+  width: var(--width);
+  height: var(--height);
+  overflow: hidden;
+}
+
+canvas.zoom {
+  position: absolute;
+  transform: scale(var(--zoom));
+  transform-origin: 0 0;
+}

@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@types/dat.gui': ^0.7.7
   '@types/react': ^18.0.27
   '@types/react-dom': ^18.0.10
   '@vitejs/plugin-react': ^3.1.0
@@ -21,6 +22,7 @@ dependencies:
   sass: 1.58.3
 
 devDependencies:
+  '@types/dat.gui': 0.7.7
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
   '@vitejs/plugin-react': 3.1.0_vite@4.1.4
@@ -492,6 +494,10 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+    dev: true
+
+  /@types/dat.gui/0.7.7:
+    resolution: {integrity: sha512-CxLCme0He5Jk3uQwfO/fGZMyNhb/ypANzqX0yU9lviBQMlen5SOvQTBQ/Cd9x5mFlUAK5Tk8RgvTyLj1nYkz+w==}
     dev: true
 
   /@types/prop-types/15.7.5:
