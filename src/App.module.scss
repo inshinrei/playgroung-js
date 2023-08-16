@@ -1,0 +1,16 @@
+$color-bg: #9095B9;
+
+.root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: $color-bg;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  position: relative;
+}

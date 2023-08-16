@@ -1,0 +1,119 @@
+$color-fox: #ff9f05;
+$color-fox-dark: #db8b09;
+$color-white: #F0E9EC;
+$fox-width: 470px;
+$fox-height: 335px;
+
+$duration: 0.9s;
+$delay-hind: -$duration / 4;
+$easing: cubic-bezier(0.445, 0, 0.55, 1);
+
+.fox {
+  width: $fox-width;
+  height: $fox-height;
+  min-width: $fox-width;
+  min-height: $fox-height;
+}
+
+.fox * {
+  position: absolute;
+}
+
+.fox:after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 80%;
+  height: 20px;
+  border-radius: 100%;
+  background-color: rgba(black, 0.2);
+  bottom: -10px;
+  left: 10%;
+  z-index: -1;
+}
+
+$kfs: (-30 15 -20 50, 25 -15 15 30);
+$animations: log, log_inner, hind_log, hind_log_inner;
+$a-len: length($animations);
+$k-len: length($kfs);
+
+@function animate($name) {
+  @return unquote('#{$name} #{$duration} #{$easing} both infinite')
+}
+
+@for $a from 1 through $a-len {
+  @keyframes #{nth($animations, $a)} {
+    @for $i from 1 through $k-len {
+      $value: nth(nth($kfs, $i), $a);
+      @if ($value != x) {
+        $rotation: $value * 1deg;
+        $p: if($i == 1, unquote('from, to'), percentage(($i - 1) / ($k-len)));
+        #{$p} {
+          transform: rotate($rotation);
+        }
+      }
+    }
+  }
+}
+
+.leg_outer {
+  bottom: 0;
+  right: 127px;
+  animation: animate(leg_outer);
+  z-index: 1;
+  @keyframes log_outer {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(-76px);
+    }
+  }
+}
+
+.leg {
+  bottom: 0;
+  animation: animate(leg);
+  @keyframes leg {
+    75% {
+      transform: translateY(-20px);
+    }
+    from, 40%, to {
+      transform: translateY(0);
+    }
+  }
+}
+
+.paw, .hind_paw {
+  bottom: 100%;
+  width: 10px;
+  height: 12px;
+  transform-origin: bottom center;
+  border-radius: 5px;
+  background-color: #000000;
+}
+
+.paw:after, .hind_paw:after {
+  content: '';
+  animation: animate(paw);
+  position: absolute;
+  display: block;
+  left: 0;
+  bottom: 0;
+  width: 200%;
+  height: 100%;
+  background-color: #000000;
+  border-radius: 100px;
+  transform-origin: 5px center;
+  @keyframes paw {
+    10%, to {
+      transform: rotate(10deg);
+    }
+    20%, 40% {
+      transform: rotate(10deg);
+    }
+    70% {
+      transform: rotate(120deg);
+    }
+  }
+}
