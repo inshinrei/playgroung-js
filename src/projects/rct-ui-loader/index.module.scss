@@ -434,5 +434,84 @@ $k-len: length($kfs);
 }
 
 .snout {
-  
+  &:before {
+    animation: animate(snout_outer);
+    @keyframes snout_outer {
+      50% {
+        transform: scaleX(0.93);
+      }
+    }
+  }
+
+  &:after {
+    left: 0;
+    background-image: radial-gradient(ellipse farthest-side at top right, transparent, transparent 99%, $color-white 99.1%);
+  }
+
+  width: 36px;
+  height: 24px;
+  left: calc(100% - 5px);
+  bottom: 0;
+  border-bottom-right-radius: 100%;
+  background-color: $color-white;
+  background-image: radial-gradient(circle 6px at top right, black, black 99%, transparent 99%);
+  transform-origin: right;
+  animation: animate(snout);
+  @keyframes snout {
+    from, to {
+      transform: scale(1);
+    }
+    50% {
+      transform: scaleX(1.05);
+    }
+  }
+}
+
+.snout:after, .snout:before {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 100%;
+  left: 5px;
+  width: calc(100% - 5px);
+  height: 40px;
+  background-image: radial-gradient(ellipse farthest-side at top right, transparent, transparent 99%, $color-fox 99.1%);
+}
+
+@mixin n-tail($n, $size: null, $prev: null, $rotation: 0deg) {
+  $selector: '.tail';
+  $sep: ' > ';
+  $result: '';
+  $a: $size / 2;
+  $b: $prev / 2;
+  @for $i from 1 through $n - 1 {
+    $result: $result + $sep + $selector;
+  }
+  #{unquote($result)} {
+    &:before, &:after {
+      content: '';
+      left: 50%;
+      position: absolute;
+      height: 50%;
+      display: block;
+      background-color: $color-fox;
+    }
+
+    &:before {
+      transform-origin: bottom left;
+    }
+
+    &:after {
+      transform-origin: top left;
+      bottom: 0;
+    }
+
+    @if ($size) {
+      height: $size * 1px;
+      width: $size * 1px;
+    }
+    @content;
+    transform-origin: calc(100% + #{$prev * 1px / 2});
+    transform: rotate($rotation);
+  }
 }
