@@ -487,6 +487,7 @@ $k-len: length($kfs);
   @for $i from 1 through $n - 1 {
     $result: $result + $sep + $selector;
   }
+
   #{unquote($result)} {
     &:before, &:after {
       content: '';
