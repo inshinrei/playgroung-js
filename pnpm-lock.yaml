@@ -19,6 +19,9 @@ dependencies:
   sass:
     specifier: ^1.63.6
     version: 1.63.6
+  three:
+    specifier: ^0.159.0
+    version: 0.159.0
 
 devDependencies:
   '@types/dat.gui':
@@ -893,6 +896,10 @@ packages:
     dependencies:
       has-flag: 3.0.0
     dev: true
+
+  /three@0.159.0:
+    resolution: {integrity: sha512-eCmhlLGbBgucuo4VEA9IO3Qpc7dh8Bd4VKzr7WfW4+8hMcIfoAVi1ev0pJYN9PTTsCslbcKgBwr2wNZ1EvLInA==}
+    dev: false
 
   /to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
