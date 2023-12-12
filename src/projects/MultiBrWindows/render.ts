@@ -103,7 +103,43 @@ function updateWindowShape(easing = true) {
   }
 }
 
-function render() {}
+function render() {
+  let time = getTime()
+  wm.update()
+  let falloff = 0.05
+  sceneOffset.x =
+    sceneOffset.x + (sceneOffsetTarget.x - sceneOffset.x) * falloff
+  sceneOffset.y =
+    sceneOffset.y + (sceneOffsetTarget.y - sceneOffset.y) * falloff
+  world.position.x = sceneOffset.x
+  world.position.y = sceneOffset.y
+  let windows = wm.windowsData
+  for (let i = 0; i < cubes.length; i++) {
+    let cube = cubes[i]
+    let w = windows[i]
+    let _t = time
+    let posTarget = {
+      x: w.shape.x + w.shape.w * 0.5,
+      y: w.shape.y + w.shape.h * 0.5,
+    }
+    cube.position.x =
+      cube.position.x + (posTarget.x - cube.position.x) * falloff
+    cube.position.y =
+      cube.position.y + (posTarget.y - cube.position.y) * falloff
+    cube.rotation.x = _t * 0.5
+    cube.rotation.y = _t * 0.3
+  }
+  renderer.render(scene, camera)
+  requestAnimationFrame(render)
+}
+
+function resize() {
+  let w = window.innerWidth
+  let h = window.innerHeight
+  camera = new t.OrthographicCamera(0, 0, -10_000, 10_000)
+  camera.updateProjectionMatrix()
+  renderer.setSize(w, h)
+}
 
 if (new URLSearchParams(window.location.search).get('clear')) {
   localStorage.clear()
