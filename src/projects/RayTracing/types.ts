@@ -2,9 +2,11 @@ import type { vec3 } from 'gl-matrix'
 import type { point3 } from './ray'
 
 export type color = vec3
+
 export const enum ObjectType {
   SPHERE = 'SPHERE',
 }
+
 export const enum MaterialType {
   SMOOTH,
   METAL,
@@ -37,6 +39,7 @@ export type SphereObject = {
 }
 
 export type SceneObject = SphereObject
+
 export type Scene = {
   objects: SceneObject[]
 }
