@@ -31,6 +31,7 @@ export type DielectricMaterial = {
 }
 
 export type Material = SmoothMaterial | MetalMaterial | DielectricMaterial
+
 export type SphereObject = {
   type: ObjectType.SPHERE
   center: point3
