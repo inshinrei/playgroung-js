@@ -40,7 +40,6 @@ export type SphereObject = {
 }
 
 export type SceneObject = SphereObject
-
 export type Scene = {
   objects: SceneObject[]
 }
