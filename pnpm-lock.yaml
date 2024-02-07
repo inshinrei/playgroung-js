@@ -7,6 +7,12 @@ dependencies:
   gl-matrix:
     specifier: ^3.4.3
     version: 3.4.3
+  mobx:
+    specifier: ^6.12.0
+    version: 6.12.0
+  mobx-react:
+    specifier: ^9.1.0
+    version: 9.1.0(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
   nanostores:
     specifier: ^0.8.1
     version: 0.8.1
@@ -812,6 +818,48 @@ packages:
     resolution: {integrity: sha512-ZhoIoL7TNV4s5B6+rx5mC//fw8/POGyNxS/DZyCJeiZ12ScLfVwRE/GfsxwiTkMYYD5DmK2/JXnEVXqL4rF+Sw==}
     dev: true
 
+  /mobx-react-lite@4.0.5(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-StfB2wxE8imKj1f6T8WWPf4lVMx3cYH9Iy60bbKXEs21+HQ4tvvfIBZfSmMXgQAefi8xYEwQIz4GN9s0d2h7dg==}
+    peerDependencies:
+      mobx: ^6.9.0
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      mobx: 6.12.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  /mobx-react@9.1.0(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-DeDRTYw4AlgHw8xEXtiZdKKEnp+c5/jeUgTbTQXEqnAzfkrgYRWP3p3Nv3Whc2CEcM/mDycbDWGjxKokQdlffg==}
+    peerDependencies:
+      mobx: ^6.9.0
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      mobx: 6.12.0
+      mobx-react-lite: 4.0.5(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /mobx@6.12.0:
+    resolution: {integrity: sha512-Mn6CN6meXEnMa0a5u6a5+RKrqRedHBhZGd15AWLk9O6uFY4KYHzImdt8JI8WODo1bjTSRnwXhJox+FCUZhCKCQ==}
+    dev: false
+
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
     dev: true
@@ -956,6 +1004,14 @@ packages:
       escalade: 3.1.1
       picocolors: 1.0.0
     dev: true
+
+  /use-sync-external-store@1.2.0(react@18.2.0):
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /vite@4.4.4(sass@1.63.6):
     resolution: {integrity: sha512-4mvsTxjkveWrKDJI70QmelfVqTm+ihFAb6+xf4sjEU2TmUCTlVX87tmg/QooPEMQb/lM9qGHT99ebqPziEd3wg==}
