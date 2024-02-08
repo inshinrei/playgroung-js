@@ -1,4 +1,4 @@
-import type { Player } from '@entities'
+import type { Player } from 'entities'
 import { PlayerStore } from './PlayerStore'
 
 export interface Root {
@@ -9,7 +9,7 @@ class RootStore implements Root {
   playerStore: Player
 
   constructor() {
-    this.playerStore = new PlayerStore(this)
+    this.playerStore = new PlayerStore()
   }
 }
 
