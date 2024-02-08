@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import styles from './nier.module.scss'
 import { drawPlayer } from './canvas/player'
+import { Provider } from 'mobx-react'
+import RootStore from './store/RootStore'
 
 export function ProjectNier() {
   let canvas = useRef<HTMLCanvasElement>(null)
@@ -13,7 +15,9 @@ export function ProjectNier() {
 
   return (
     <div className={styles.root}>
-      <canvas ref={canvas} color="red" />
+      <Provider rootStore={RootStore}>
+        <canvas ref={canvas} color="red" />
+      </Provider>
     </div>
   )
 }
