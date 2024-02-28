@@ -29,15 +29,34 @@ function Bar({ className }: BarProps) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    let interval: number
+    let timeout: number
     let e = ref.current
-    if (e) {
-      interval = setInterval(() => {
-        e!.style.transform = `translateY(${Math.random() * 100}px)`
-      }, 700)
+    if (e && e.parentElement) {
+      timeout = setTimeout(
+        () => {
+          moveElement()
+        },
+        Math.random() * 4000 + 2000,
+      )
     }
-    return () => clearInterval(interval)
+    return () => clearInterval(timeout)
   }, [ref.current])
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.addEventListener('transitionend', moveElement)
+    }
+    return () => ref.current?.removeEventListener('transitionend', moveElement)
+  }, [ref.current])
+
+  function moveElement() {
+    let e = ref.current
+    if (e && e.parentElement) {
+      e.style.transform = `translateY(${Math.floor(
+        ~(Math.random() * (e.parentElement.clientHeight - 40)),
+      )}px)`
+    }
+  }
 
   return (
     <div className={cn(styles.barContainer, className)}>
