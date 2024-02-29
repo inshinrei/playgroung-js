@@ -52,9 +52,9 @@ function Bar({ className }: BarProps) {
   function moveElement() {
     let e = ref.current
     if (e && e.parentElement) {
-      e.style.transform = `translateY(${Math.floor(
-        ~(Math.random() * (e.parentElement.clientHeight - 40)),
-      )}px)`
+      e.style.transform = `translateY(${
+        Math.floor(Math.random() * e.parentElement.clientHeight - 93) || 0
+      }px)`
     }
   }
 
