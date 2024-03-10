@@ -27,7 +27,6 @@ interface BarProps {
 
 function Bar({ className }: BarProps) {
   const ref = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
     let timeout: number
     let e = ref.current
