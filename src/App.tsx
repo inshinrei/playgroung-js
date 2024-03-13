@@ -7,7 +7,11 @@ import { Sb } from './projects/sb'
 function App() {
   return (
     <div className={styles.root}>
-      <Sb />
+      {/*<Sb />*/}
+      <div className={styles.c}>
+        <div className={styles.o} />
+        <div className={styles.t} />
+      </div>
     </div>
   )
 }
