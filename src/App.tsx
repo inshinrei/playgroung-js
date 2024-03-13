@@ -5,15 +5,7 @@ import { ProjectNier } from './projects/nier/nier'
 import { Sb } from './projects/sb'
 
 function App() {
-  return (
-    <div className={styles.root}>
-      {/*<Sb />*/}
-      <div className={styles.c}>
-        <div className={styles.o} />
-        <div className={styles.t}>rrrrrrrrrrrrrrrrrrrrrr</div>
-      </div>
-    </div>
-  )
+  return <div className={styles.root}>{/*<Sb />*/}</div>
 }
 
 export default App
