@@ -10,7 +10,7 @@ function App() {
       {/*<Sb />*/}
       <div className={styles.c}>
         <div className={styles.o} />
-        <div className={styles.t} />
+        <div className={styles.t}>rrrrrrrrrrrrrrrrrrrrrr</div>
       </div>
     </div>
   )
