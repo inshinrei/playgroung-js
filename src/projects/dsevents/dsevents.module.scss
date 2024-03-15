@@ -1,0 +1,29 @@
+.root {
+    position: relative;
+    display: flex;
+    height: 200px;
+}
+
+.bars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bar {
+    width: 3px;
+    height: 6px;
+    background-color: white;
+
+    --border-radius: 100%;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+.revert {
+    transform: rotate(180deg)
+}
