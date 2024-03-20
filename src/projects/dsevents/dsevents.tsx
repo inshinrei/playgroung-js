@@ -11,6 +11,9 @@ export function DsEvents() {
       <ul>
         <li>event 1</li>
         <li>event 2</li>
+        <li>event 3</li>
+        <li>event 4</li>
+        <li>event 5</li>
       </ul>
     </div>
   )
