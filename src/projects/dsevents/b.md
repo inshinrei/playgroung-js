@@ -3,7 +3,10 @@
 ```typescript
 pckg.setContainer('')
 log.type('')
-log.error()
+
+log.e
+log.i
+log.w
 ```
 
 - show up animation
