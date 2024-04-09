@@ -2,8 +2,8 @@
 
 ```typescript
 pckg.setContainer('')
-log.type('')
 
+log.type('')
 log.e
 log.i
 log.w
