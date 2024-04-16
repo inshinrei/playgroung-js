@@ -2,6 +2,7 @@
 
 ```typescript
 pckg.setContainer('')
+
 log.type('')
 log.e
 log.i
