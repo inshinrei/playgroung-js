@@ -9,3 +9,4 @@
 2. implement list logging
 3. implement animation for text appearing
 4. implement animation for list appearing and disappearing
+5. make set container and logger options as an invokable builder, so that multiple lists could be set
