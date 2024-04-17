@@ -1,12 +1,11 @@
-- use:
+## usage
 
-```typescript
-pckg.setContainer('')
+1. set the container `.setContainer(element)`
+2. invoke logging `.e, .i, .w`
 
-log.type('')
-log.e
-log.i
-log.w
-```
+## plan
 
-- show up animation
+1. implement container set and render a list in there
+2. implement list logging
+3. implement animation for text appearing
+4. implement animation for list appearing and disappearing
