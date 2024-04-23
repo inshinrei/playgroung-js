@@ -1,13 +1,28 @@
 export class Logger {
-  constructor(private readonly rootElement: HTMLElement) {
-    appendListToElement(rootElement, makeList())
+  private readonly listElement: HTMLElement
+
+  constructor(rootElement: HTMLElement) {
+    this.listElement = makeList()
+    appendListToElement(rootElement, this.listElement)
   }
 
-  l = (m: string) => {}
+  l = (m: string) => {
+    appendListElement(this.listElement, this.makeListElement(m))
+  }
 
-  i = (m: string) => {}
+  i = (m: string) => {
+    appendListElement(this.listElement, this.makeListElement(m))
+  }
 
-  e = (m: string) => {}
+  e = (m: string) => {
+    appendListElement(this.listElement, this.makeListElement(m))
+  }
+
+  private makeListElement = (message: string) => {
+    let e = document.createElement('span')
+    e.textContent = message
+    return e
+  }
 }
 
 function appendListToElement(e: HTMLElement, list: HTMLElement) {
@@ -19,4 +34,10 @@ function makeList(root = document): HTMLElement {
   let l = root.createElement('ul')
   e.appendChild(l)
   return e
+}
+
+function appendListElement(list: HTMLElement, element: HTMLElement) {
+  let li = document.createElement('li')
+  li.appendChild(element)
+  list.appendChild(li)
 }
