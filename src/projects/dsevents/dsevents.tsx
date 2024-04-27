@@ -1,13 +1,13 @@
 import styles from './dsevents.module.scss'
 import { Logger } from './main'
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useForceUpdate } from '../../hooks/useForceUpdate'
 
 export function DsEvents() {
   let update = useForceUpdate()
   let r = useRef(null)
   let l: Logger | null = null
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (r.current) {
       l = new Logger(r.current)
       update()
