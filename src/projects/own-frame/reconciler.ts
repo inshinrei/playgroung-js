@@ -1,11 +1,11 @@
 import { TEXT_ELEMENT } from './element'
+import { updateDomProperties } from './dom-util'
 
 let rootInstance: unknown = null
 
 export function render(element: unknown, container: unknown) {
   let prevInstance = rootInstance
-  let nextInstance = reconcile(container, prevInstance, element)
-  rootInstance = nextInstance
+  rootInstance = reconcile(container, prevInstance, element)
 }
 
 function reconcile(container: any, instance: any, element: unknown) {
@@ -26,23 +26,10 @@ function instantiate(element: any) {
   let dom = isTextElement
     ? document.createTextNode('')
     : document.createElement(type)
-  let isListener = (name: string) => name.startsWith('on')
-  Object.keys(props)
-    .filter(isListener)
-    .forEach((name) => {
-      let eventType = name.toLowerCase().substring(2)
-      dom.addEventListener(eventType, props[name])
-    })
-  let isAttribute = (name: string) => !isListener(name) && name !== 'children'
-  Object.keys(props)
-    .filter(isAttribute)
-    .forEach((name) => {
-      dom[name] = props[name]
-    })
+  updateDomProperties(dom, [], props)
   let childElements = props.children ?? []
   let childInstances = childElements.map(instantiate)
   let childDoms = childInstances.map((instance: any) => instance.dom)
   childDoms.forEach((dom: any) => dom.appendChild(dom))
-  const instance = { dom, element, childInstances }
-  return instance
+  return { dom, element, childInstances }
 }
