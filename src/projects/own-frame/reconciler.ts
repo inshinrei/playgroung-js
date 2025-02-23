@@ -75,3 +75,5 @@ function instantiate(element: any): any {
     return instance
   }
 }
+
+export function scheduleUpdate() {}
