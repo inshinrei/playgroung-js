@@ -1,15 +1,15 @@
 import { scheduleUpdate } from './reconciler'
 
-export class Component<S = any, P = any> {
-  props: P
-  state: S
+export class Component {
+  props
+  state
 
-  constructor(props: P) {
+  constructor(props) {
     this.props = props || {}
     this.state ||= {}
   }
 
-  setState(partialState: any) {
+  setState(partialState) {
     scheduleUpdate(this, partialState)
   }
 }
