@@ -1,4 +1,4 @@
-import { scheduleUpdate } from './reconciler'
+import { scheduleUpdate } from './reconciler.js'
 
 export class Component {
   props
@@ -14,4 +14,8 @@ export class Component {
   }
 }
 
-export function createInstance(fiber) {}
+export function createInstance(fiber) {
+  let instance = new fiber.type(fiber.props)
+  instance.__fiber = fiber
+  return isntance
+}

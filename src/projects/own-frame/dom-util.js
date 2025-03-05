@@ -1,3 +1,5 @@
+import { TEXT_ELEMENT } from './element.js'
+
 function isEvent(name) {
   return name.startsWith('on')
 }
@@ -14,7 +16,7 @@ function isGone(_, next) {
   return (key) => !(key in next)
 }
 
-export function updateDomProperties(dom: any, prevProps: any, nextProps: any) {
+export function updateDomProperties(dom, prevProps, nextProps) {
   Object.keys(prevProps)
     .filter(isEvent)
     .filter((key) => !(key in nextProps) || isNew(prevProps, nextProps)(key))
@@ -46,4 +48,13 @@ export function updateDomProperties(dom: any, prevProps: any, nextProps: any) {
     let type = name.toLowerCase().substring(2)
     dom.addEventListener(type, nextProps[name])
   })
+}
+
+export function createDomElement(fiber) {
+  let isTextElement = fiber.type === TEXT_ELEMENT
+  let dom = isTextElement
+    ? document.createTextNode('')
+    : document.createElement(fiber.type)
+  updateDomProperties(dom, [], fiber.props)
+  return dom
 }
