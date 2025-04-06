@@ -1,4 +1,11 @@
-import { RefObject, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import {
+  RefObject,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from 'react'
 
 enum LoadMoreDirection {}
 
@@ -228,11 +235,36 @@ function throttleWithRafFallback<F extends AnyToVoidFunction>(fn: F) {
   }, fn)
 }
 
-// resetscroll
-function resetScroll() {}
+// module: stand alone name
+function forceReflow(element: HTMLElement) {
+  element.offsetWidth
+}
 
-// uselastcallback
-function useLastCallback() {}
+// resetscroll
+function resetScroll(container: HTMLDivElement, scrollTop?: number) {
+  // if ios -> container.style.overflow = hidden
+  if (scrollTop !== undefined) {
+    container.scrollTop = scrollTop
+  }
+  // if ios -> overflow = '' or unset
+}
+
+// module: useStateRef
+// allows to use state silently, without causing updates
+function useStateRef<T>(value: T) {
+  let ref = useRef<T>(value)
+  ref.current = value
+  return ref
+}
+
+// module: uselastcallback
+function useLastCallback<F extends AnyFunction>(cb?: F) {
+  let ref = useStateRef(cb)
+  return useCallback(
+    (...args: Parameters<F>) => ref.current?.(...args),
+    [],
+  ) as F
+}
 
 // build style
 function buildStyle() {}
@@ -265,6 +297,7 @@ export function InfiniteScroll({
   if (ref) {
     containerRef = ref
   }
+  // replace on use state ref
   let stateRef = useRef<{
     listItemElements?: NodeListOf<HTMLDivElement>
     isScrollTopJustUpdated?: boolean
