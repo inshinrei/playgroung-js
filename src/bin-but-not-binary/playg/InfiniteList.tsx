@@ -7,7 +7,11 @@ import {
   useRef,
 } from 'react'
 
-enum LoadMoreDirection {}
+enum LoadMoreDirection {
+  Backwards,
+  Forwards,
+  Around,
+}
 
 type Props = {
   ref?: RefObject<HTMLDivElement>
@@ -266,8 +270,13 @@ function useLastCallback<F extends AnyFunction>(cb?: F) {
   ) as F
 }
 
-// build style
-function buildStyle() {}
+// build style, module: standalone
+
+type BuildStyleParts = (string | false | undefined)[]
+
+function buildStyle(...parts: BuildStyleParts): string {
+  return parts.filter(Boolean).join(';')
+}
 
 export function InfiniteScroll({
   ref,
@@ -319,7 +328,7 @@ export function InfiniteScroll({
       ),
       debounce(
         () => {
-          onLoadMore({ direction: LoadMoreDirection.Forwads })
+          onLoadMore({ direction: LoadMoreDirection.Forwards })
         },
         1000,
         true,
