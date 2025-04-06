@@ -36,11 +36,172 @@ const DEFAULT_LIST_SELECTOR = '.listitem'
 const DEFAULT_PRELOAD_BACKWARDS = 20
 const DEFAULT_SENSITIVE_AREA = 800
 
-// debounce
-function debounce() {}
+// debounce,
+// g type
+type AnyToVoidFunction = (...args: any[]) => void
+type NoneToVoidFunction = () => void
 
-// requestRepaint
-function requestForcedReflow() {}
+// module: schedulers
+
+type Scheduler = typeof requestAnimationFrame
+
+function debounce<F extends AnyToVoidFunction>(
+  fn: F,
+  ms: number,
+  shouldRunFirst = true,
+  shouldRunLast = true,
+) {
+  let waitingTimeout: number | undefined
+  return (...args: Parameters<F>) => {
+    if (waitingTimeout) {
+      clearTimeout(waitingTimeout)
+      waitingTimeout = undefined
+    } else if (shouldRunFirst) {
+      fn(...args)
+    }
+    waitingTimeout = self.setTimeout(() => {
+      if (shouldRunLast) {
+        fn(...args)
+      }
+      waitingTimeout = undefined
+    }, ms)
+  }
+}
+
+function throttleWith<F extends AnyToVoidFunction>(
+  schedulerFn: Scheduler,
+  fn: F,
+) {
+  let waiting = false
+  let args: Parameters<F>
+  return (..._args: Parameters<F>) => {
+    args = _args
+    if (!waiting) {
+      waiting = true
+      schedulerFn(() => {
+        waiting = false
+        fn(...args)
+      })
+    }
+  }
+}
+
+let fastRafCallbacks: Set<NoneToVoidFunction> | undefined
+let fastRafFallbackCallbacks: Set<NoneToVoidFunction> | undefined
+let fastRafFallbackTimeout: number | undefined
+
+const FAST_RAF_TIMEOUT_FALLBACK_MS = 35 // < 30 FPS
+
+function fastRaf(cb: NoneToVoidFunction, withTimeoutFallback = false) {
+  if (!fastRafCallbacks) {
+    fastRafCallbacks = new Set([cb])
+    requestAnimationFrame(() => {
+      let currentCallbacks = fastRafCallbacks!
+      fastRafCallbacks = undefined
+      fastRafFallbackCallbacks = undefined
+      if (fastRafFallbackTimeout) {
+        clearTimeout(fastRafFallbackTimeout)
+        fastRafFallbackTimeout = undefined
+      }
+      currentCallbacks.forEach((c) => c())
+    })
+  } else {
+    fastRafCallbacks.add(cb)
+  }
+  if (withTimeoutFallback) {
+    if (!fastRafFallbackCallbacks) {
+      fastRafFallbackCallbacks = new Set([cb])
+    } else {
+      fastRafFallbackCallbacks.add(cb)
+    }
+    if (!fastRafFallbackTimeout) {
+      fastRafFallbackTimeout = self.setTimeout(() => {
+        let currentTimeoutCallbacks = fastRafCallbacks!
+        if (fastRafCallbacks) {
+          currentTimeoutCallbacks.forEach(
+            fastRafCallbacks.delete,
+            fastRafCallbacks,
+          )
+        }
+        fastRafFallbackCallbacks = undefined
+        if (fastRafFallbackTimeout) {
+          clearTimeout(fastRafFallbackTimeout)
+          fastRafFallbackTimeout = undefined
+        }
+        currentTimeoutCallbacks.forEach((c) => c())
+      }, FAST_RAF_TIMEOUT_FALLBACK_MS)
+    }
+  }
+}
+
+// requestRepaint, module: dom
+// refactor to Set>?
+let pendingForceReflowTasks: Array<() => NoneToVoidFunction | void> = []
+let pendingMutationTasks: Array<NoneToVoidFunction> = []
+let pendingMeasureTasks: Array<NoneToVoidFunction> = []
+
+type Phase = 'measure' | 'mutate'
+let phase = 'measure'
+
+function setPhase(newPhase: Phase) {
+  phase = newPhase
+}
+
+function safeExec(cb) {
+  cb()
+}
+
+const runUpdatePassOnRaf = throttleWithRafFallback(() => {
+  let currentMeasureTasks = pendingMeasureTasks
+  pendingMeasureTasks = []
+  currentMeasureTasks.forEach((task) => {
+    safeExec(task)
+  })
+  // for correct order for mutation observer microtasks
+  Promise.resolve()
+    .then(() => {
+      setPhase('mutate')
+      let currentMutationTasks = pendingMutationTasks
+      pendingMutationTasks = []
+      currentMutationTasks.forEach((task) => {
+        safeExec(task)
+      })
+    })
+    .then(() => {
+      setPhase('measure')
+      let pendingForceReflowMutationTasks: Array<NoneToVoidFunction> = []
+      for (const task of pendingForceReflowTasks) {
+        safeExec(() => {
+          let mutationTask = task()
+          if (mutationTask) {
+            pendingForceReflowMutationTasks.push(mutationTask)
+          }
+        })
+      }
+      pendingForceReflowTasks = []
+      return pendingForceReflowMutationTasks
+    })
+    .then((pendingForceReflowMutationTasks) => {
+      setPhase('mutate')
+      for (const task of pendingForceReflowMutationTasks) {
+        safeExec(task)
+      }
+    })
+    .then(() => {
+      setPhase('measure')
+    })
+})
+
+function requestForcedReflow(cb: () => NoneToVoidFunction | void) {
+  pendingForceReflowTasks.push(cb)
+  runUpdatePassOnRaf()
+}
+
+function throttleWithRafFallback<F extends AnyToVoidFunction>(fn: F) {
+  return throttleWith((throttledFn: NoneToVoidFunction) => {
+    fastRaf(throttledFn, true)
+  }, fn)
+}
 
 // resetscroll
 function resetScroll() {}
