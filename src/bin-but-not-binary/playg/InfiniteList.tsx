@@ -40,6 +40,7 @@ const DEFAULT_SENSITIVE_AREA = 800
 // g type
 type AnyToVoidFunction = (...args: any[]) => void
 type NoneToVoidFunction = () => void
+type AnyFunction = (...args: any[]) => any
 
 // module: schedulers
 
@@ -147,8 +148,32 @@ function setPhase(newPhase: Phase) {
   phase = newPhase
 }
 
-function safeExec(cb) {
-  cb()
+let SAFE_EXEC_ENABLED = true // !DEBUG
+type SafeExecOptions = {
+  rescue?: (err: Error) => void
+  always?: NoneToVoidFunction
+  shouldIgnoreError?: boolean
+}
+
+function safeExec<F extends AnyFunction>(
+  cb: F,
+  options: SafeExecOptions = {},
+): ReturnType<F> | undefined {
+  if (!SAFE_EXEC_ENABLED) {
+    return cb()
+  }
+  let { rescue, always, shouldIgnoreError } = options
+  try {
+    return cb()
+  } catch (err: any) {
+    rescue?.(err)
+    if (!shouldIgnoreError) {
+      // report error
+    }
+    return undefined
+  } finally {
+    always?.()
+  }
 }
 
 const runUpdatePassOnRaf = throttleWithRafFallback(() => {
