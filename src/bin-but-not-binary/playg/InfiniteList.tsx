@@ -36,14 +36,19 @@ const DEFAULT_LIST_SELECTOR = '.listitem'
 const DEFAULT_PRELOAD_BACKWARDS = 20
 const DEFAULT_SENSITIVE_AREA = 800
 
+// debounce
 function debounce() {}
 
+// requestRepaint
 function requestForcedReflow() {}
 
+// resetscroll
 function resetScroll() {}
 
+// uselastcallback
 function useLastCallback() {}
 
+// build style
 function buildStyle() {}
 
 export function InfiniteScroll({
