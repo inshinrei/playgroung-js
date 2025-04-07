@@ -5,6 +5,7 @@ import {
   useLayoutEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react'
 
 enum LoadMoreDirection {
@@ -524,3 +525,37 @@ export function InfiniteScroll({
     </div>
   )
 }
+
+// now the main list..... aaaah
+// module: useForceUpdate
+function useForceUpdate() {
+  let [, trigger] = useState(false)
+  return useCallback(() => {
+    trigger((s) => !s)
+  }, [])
+}
+
+// module: usePrevious
+function usePrevious<T extends any>(next: T, shouldSkipUndefined?: boolean) {
+  let ref = useRef<T>()
+  let { current } = ref
+  if (!shouldSkipUndefined || next !== undefined) {
+    ref.current = next
+  }
+  return current
+}
+
+function usePrevNew<T extends any>(current: T) {
+  let prevRef = useRef<T>()
+  let lastRef = useRef<T>()
+  if (lastRef.current !== current) {
+    prevRef.current = lastRef.current
+  }
+  lastRef.current = current
+  return prevRef.current
+}
+
+// module: iteratees
+function areSortedArraysEqual() {}
+
+// module: useInfiniteScroll
