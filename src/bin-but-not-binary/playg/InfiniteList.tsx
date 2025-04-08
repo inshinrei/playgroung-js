@@ -9,7 +9,7 @@ import {
 } from 'react'
 import styles from './InfiniteList.module.scss'
 
-enum LoadMoreDirection {
+export enum LoadMoreDirection {
   Backwards,
   Forwards,
   Around,
@@ -59,7 +59,7 @@ type AnyFunction = (...args: any[]) => any
 
 type Scheduler = typeof requestAnimationFrame
 
-function debounce<F extends AnyToVoidFunction>(
+export function debounce<F extends AnyToVoidFunction>(
   fn: F,
   ms: number,
   shouldRunFirst = true,
@@ -82,7 +82,7 @@ function debounce<F extends AnyToVoidFunction>(
   }
 }
 
-function throttleWith<F extends AnyToVoidFunction>(
+export function throttleWith<F extends AnyToVoidFunction>(
   schedulerFn: Scheduler,
   fn: F,
 ) {
@@ -106,7 +106,7 @@ let fastRafFallbackTimeout: number | undefined
 
 const FAST_RAF_TIMEOUT_FALLBACK_MS = 35 // < 30 FPS
 
-function fastRaf(cb: NoneToVoidFunction, withTimeoutFallback = false) {
+export function fastRaf(cb: NoneToVoidFunction, withTimeoutFallback = false) {
   if (!fastRafCallbacks) {
     fastRafCallbacks = new Set([cb])
     requestAnimationFrame(() => {
@@ -168,7 +168,7 @@ type SafeExecOptions = {
   shouldIgnoreError?: boolean
 }
 
-function safeExec<F extends AnyFunction>(
+export function safeExec<F extends AnyFunction>(
   cb: F,
   options: SafeExecOptions = {},
 ): ReturnType<F> | undefined {
@@ -230,24 +230,23 @@ const runUpdatePassOnRaf = throttleWithRafFallback(() => {
     })
 })
 
-function requestForcedReflow(cb: () => NoneToVoidFunction | void) {
+export function requestForcedReflow(cb: () => NoneToVoidFunction | void) {
   pendingForceReflowTasks.push(cb)
   runUpdatePassOnRaf()
 }
 
-function throttleWithRafFallback<F extends AnyToVoidFunction>(fn: F) {
+export function throttleWithRafFallback<F extends AnyToVoidFunction>(fn: F) {
   return throttleWith((throttledFn: NoneToVoidFunction) => {
     fastRaf(throttledFn, true)
+    return 0
   }, fn)
 }
 
-// module: stand alone name
-function forceReflow(element: HTMLElement) {
+export function forceReflow(element: HTMLElement) {
   element.offsetWidth
 }
 
-// resetscroll
-function resetScroll(container: HTMLDivElement, scrollTop?: number) {
+export function resetScroll(container: HTMLDivElement, scrollTop?: number) {
   // if ios -> container.style.overflow = hidden
   if (scrollTop !== undefined) {
     container.scrollTop = scrollTop
@@ -255,16 +254,13 @@ function resetScroll(container: HTMLDivElement, scrollTop?: number) {
   // if ios -> overflow = '' or unset
 }
 
-// module: useStateRef
-// allows to use state silently, without causing updates
-function useStateRef<T>(value: T) {
+export function useStateRef<T>(value: T) {
   let ref = useRef<T>(value)
   ref.current = value
   return ref
 }
 
-// module: uselastcallback
-function useLastCallback<F extends AnyFunction>(cb?: F) {
+export function useLastCallback<F extends AnyFunction>(cb?: F) {
   let ref = useStateRef(cb)
   return useCallback(
     (...args: Parameters<F>) => ref.current?.(...args),
@@ -272,11 +268,9 @@ function useLastCallback<F extends AnyFunction>(cb?: F) {
   ) as F
 }
 
-// build style, module: standalone
-
 type BuildStyleParts = (string | false | undefined)[]
 
-function buildStyle(...parts: BuildStyleParts): string {
+export function buildStyle(...parts: BuildStyleParts): string {
   return parts.filter(Boolean).join(';')
 }
 
