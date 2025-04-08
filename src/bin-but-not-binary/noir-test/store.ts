@@ -39,12 +39,6 @@ class BaseModel {
     this.storage = config.storage
     this.migration = config.migration
     this.storageWhitelist = config.whitelist
-    console.debug(
-      'init with config',
-      config,
-      'whitelist',
-      this.storageWhitelist,
-    )
   }
 
   onStart() {
@@ -55,11 +49,9 @@ class BaseModel {
   // pass whitelist as arg
   sub() {
     this.storageWhitelist.forEach((item) => {
-      console.debug('whitelist item: ', item)
       reaction(
         () => this[item],
         (d) => {
-          console.debug('reaction item: ', item, d)
           this.storage.set(this.key + item, d)
         },
       )
@@ -85,7 +77,6 @@ export class Store extends BaseModel {
   }
 
   setState1(v) {
-    console.debug('setState1', v)
     this.state1 = v
   }
 

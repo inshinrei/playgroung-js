@@ -33,8 +33,6 @@ class SwipeComponent extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.debug(nextProps, nextState)
-    console.debug(this.props, this.state)
     if (this.pendingSwipe) {
       return false
     }
@@ -47,10 +45,8 @@ class SwipeComponent extends Component {
       this.pendingSwipe = true
       const elem = document.createElement('div')
       this.elem = elem
-      console.debug(this.ref.current.clientWidth)
       elem.style.position = 'absolute'
       elem.style.left = this.ref.current.clientWidth + 'px'
-      console.debug('appending child')
       this.ref.current.appendChild(elem)
       const root = createRoot(elem)
       root.render(nextProps.children)

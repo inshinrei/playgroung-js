@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import styles from './InfiniteList.module.scss'
 
 enum LoadMoreDirection {
   Backwards,
@@ -408,6 +409,7 @@ export function InfiniteScroll({
       let { isScrollTopJustUpdated, currentAnchor, currentAnchorTop } =
         stateRef.current
       let listItemElements = stateRef.current.listItemElements!
+
       if (isScrollTopJustUpdated) {
         stateRef.current.isScrollTopJustUpdated = false
         return
@@ -416,6 +418,7 @@ export function InfiniteScroll({
       let scrollContainer = scrollContainerClosest
         ? containerRef.current!.closest<HTMLDivElement>(scrollContainerClosest)!
         : containerRef.current!
+
       let { scrollTop, scrollHeight, offsetHeight } = scrollContainer
       let top = listLength ? listItemElements[0].offsetTop : 0
       let isNearTop = scrollTop <= top + sensitiveArea
@@ -425,7 +428,6 @@ export function InfiniteScroll({
         : scrollHeight
       let isNearBottom = bottom - (scrollTop + offsetHeight) <= sensitiveArea
       let isUpdated = false
-
       if (isNearTop) {
         let nextAnchor = listItemElements[0]
         if (nextAnchor) {
@@ -495,8 +497,9 @@ export function InfiniteScroll({
     if (!scrollContainer) {
       return undefined
     }
-    let handleNativeScroll = (e: Event) =>
+    let handleNativeScroll = (e: Event) => {
       handleScroll(e as unknown as React.UIEvent<HTMLDivElement>)
+    }
     scrollContainer.addEventListener('scroll', handleNativeScroll)
     return () => {
       scrollContainer.removeEventListener('scroll', handleNativeScroll)
@@ -566,8 +569,6 @@ function areSortedArraysEqual(array1: any[], array2: any[]) {
 // module: useInfiniteScroll
 type GetMore = (args: { direction: LoadMoreDirection }) => void
 type LoadMoreBackwards = (args: { offsetId?: number | string }) => void
-
-const DEFAULT_LIST_SLICE = 30
 
 function useInfiniteScroll<ListId extends string | number>(
   loadMoreBackwards?: LoadMoreBackwards,
@@ -701,7 +702,9 @@ function getViewportSlice<ListId extends string | number>(
   offsetId?: ListId,
 ) {
   let { length } = sourceIds
+  console.debug('offsetId: ', offsetId)
   let index = offsetId ? sourceIds.indexOf(offsetId) : 0
+  console.debug('index: ', index)
   let isForwards = direction === LoadMoreDirection.Forwards
   let indexForDirection = isForwards ? index : index + 1 || length
   let from = Math.max(0, indexForDirection - listSlice)
@@ -728,4 +731,62 @@ function getViewportSlice<ListId extends string | number>(
   }
 }
 
-//
+// recents list
+type RecentsListProps = {
+  className?: string
+  isActive: boolean
+  // extract in component, no props
+  entries: Array<string>
+}
+
+const DEFAULT_LIST_SLICE = 30
+const INTERSECTION_THROTTLE = 200
+const DRAG_ENTER_DEBOUNCE = 500
+const RESERVED_HOTKEYS = new Set(['9', '0'])
+const CHAT_HEIGHT_PX = 60
+
+export function RecentsList({
+  className,
+  entries,
+  isActive,
+}: RecentsListProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const orderedIds = entries
+  const listHeight = orderedIds.length * CHAT_HEIGHT_PX
+  const archiveHeight = 60
+  const [viewportIds, getMore] = useInfiniteScroll(
+    undefined,
+    orderedIds,
+    undefined,
+    DEFAULT_LIST_SLICE,
+  )
+
+  function renderRecents() {
+    const viewportOffset = orderedIds!.indexOf(viewportIds![0])
+    const pinnedCount = 0
+    return viewportIds!.map((id, i) => {
+      const isPinned = false
+      const offsetTop = archiveHeight + (viewportOffset + i) * CHAT_HEIGHT_PX
+      return (
+        <div
+          style={{ top: offsetTop + 'px' }}
+          className={`ListItem ${styles.item}`}
+        >{`${id} ${offsetTop}`}</div>
+      )
+    })
+  }
+
+  return (
+    <InfiniteScroll
+      onLoadMore={getMore}
+      entries={viewportIds}
+      ref={containerRef}
+      maxHeight={listHeight + archiveHeight}
+      preloadBackwards={DEFAULT_LIST_SLICE}
+      entrySelector=".ListItem"
+      className={styles.list}
+    >
+      {viewportIds?.length ? renderRecents() : null}
+    </InfiniteScroll>
+  )
+}
