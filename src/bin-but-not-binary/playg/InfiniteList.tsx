@@ -1,18 +1,14 @@
-import {
-  RefObject,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
-import styles from './InfiniteList.module.scss'
-import { LoadMoreDirection } from './types'
+import { RefObject, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import { GetMore, LoadMoreBackwards, LoadMoreDirection } from './types'
+import { debounce, requestForcedReflow, resetScroll } from './schedulers'
+import { useLastCallback, usePrevious } from './hooks'
+import { buildStyle } from './buildStyle'
+import { useForceUpdate } from '../../hooks/useForceUpdate'
+import { areSortedArraysEqual } from './iterates'
 
 type Props = {
   ref?: RefObject<HTMLDivElement>
-  style?: string
+  style?: React.CSSProperties
   className?: string
   entries?: any[]
   entrySelector?: string
@@ -43,26 +39,6 @@ type Props = {
 const DEFAULT_LIST_SELECTOR = '.listitem'
 const DEFAULT_PRELOAD_BACKWARDS = 20
 const DEFAULT_SENSITIVE_AREA = 800
-
-export function useStateRef<T>(value: T) {
-  let ref = useRef<T>(value)
-  ref.current = value
-  return ref
-}
-
-export function useLastCallback<F extends AnyFunction>(cb?: F) {
-  let ref = useStateRef(cb)
-  return useCallback(
-    (...args: Parameters<F>) => ref.current?.(...args),
-    [],
-  ) as F
-}
-
-type BuildStyleParts = (string | false | undefined)[]
-
-export function buildStyle(...parts: BuildStyleParts): string {
-  return parts.filter(Boolean).join(';')
-}
 
 export function InfiniteScroll({
   ref,
@@ -313,52 +289,11 @@ export function InfiniteScroll({
   )
 }
 
-// now the main list..... aaaah
-// module: useForceUpdate
-function useForceUpdate() {
-  let [, trigger] = useState(false)
-  return useCallback(() => {
-    trigger((s) => !s)
-  }, [])
-}
-
-// module: usePrevious
-function usePrevious<T extends any>(next: T, shouldSkipUndefined?: boolean) {
-  let ref = useRef<T>()
-  let { current } = ref
-  if (!shouldSkipUndefined || next !== undefined) {
-    ref.current = next
-  }
-  return current
-}
-
-function usePrevNew<T extends any>(current: T) {
-  let prevRef = useRef<T>()
-  let lastRef = useRef<T>()
-  if (lastRef.current !== current) {
-    prevRef.current = lastRef.current
-  }
-  lastRef.current = current
-  return prevRef.current
-}
-
-// module: iteratees
-function areSortedArraysEqual(array1: any[], array2: any[]) {
-  if (array1.length !== array2.length) {
-    return false
-  }
-  return array1.every((item, i) => item === array2[i])
-}
-
-// module: useInfiniteScroll
-type GetMore = (args: { direction: LoadMoreDirection }) => void
-type LoadMoreBackwards = (args: { offsetId?: number | string }) => void
-
-function useInfiniteScroll<ListId extends string | number>(
+export function useInfiniteScroll<ListId extends string | number>(
   loadMoreBackwards?: LoadMoreBackwards,
   listIds?: ListId[],
   isDisabled = false,
-  listSlice = DEFAULT_LIST_SLICE,
+  listSlice = 30,
 ): [ListId[]?, GetMore?, number?] {
   let requestParamsRef = useRef<{
     direction?: LoadMoreDirection
@@ -513,64 +448,4 @@ function getViewportSlice<ListId extends string | number>(
     newIsOnTop: newViewportIds[0] === sourceIds[0],
     fromOffset: from,
   }
-}
-
-// recents list
-type RecentsListProps = {
-  className?: string
-  isActive: boolean
-  // extract in component, no props
-  entries: Array<string>
-}
-
-const DEFAULT_LIST_SLICE = 30
-const INTERSECTION_THROTTLE = 200
-const DRAG_ENTER_DEBOUNCE = 500
-const RESERVED_HOTKEYS = new Set(['9', '0'])
-const CHAT_HEIGHT_PX = 60
-
-export function RecentsList({
-  className,
-  entries,
-  isActive,
-}: RecentsListProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const orderedIds = entries
-  const listHeight = orderedIds.length * CHAT_HEIGHT_PX
-  const archiveHeight = 60
-  const [viewportIds, getMore] = useInfiniteScroll(
-    undefined,
-    orderedIds,
-    undefined,
-    DEFAULT_LIST_SLICE,
-  )
-
-  function renderRecents() {
-    const viewportOffset = orderedIds!.indexOf(viewportIds![0])
-    const pinnedCount = 0
-    return viewportIds!.map((id, i) => {
-      const isPinned = false
-      const offsetTop = archiveHeight + (viewportOffset + i) * CHAT_HEIGHT_PX
-      return (
-        <div
-          style={{ top: offsetTop + 'px' }}
-          className={`ListItem ${styles.item}`}
-        >{`${id} ${offsetTop}`}</div>
-      )
-    })
-  }
-
-  return (
-    <InfiniteScroll
-      onLoadMore={getMore}
-      entries={viewportIds}
-      ref={containerRef}
-      maxHeight={listHeight + archiveHeight}
-      preloadBackwards={DEFAULT_LIST_SLICE}
-      entrySelector=".ListItem"
-      className={styles.list}
-    >
-      {viewportIds?.length ? renderRecents() : null}
-    </InfiniteScroll>
-  )
 }
