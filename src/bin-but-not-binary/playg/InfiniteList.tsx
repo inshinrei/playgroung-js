@@ -8,12 +8,7 @@ import {
   useState,
 } from 'react'
 import styles from './InfiniteList.module.scss'
-
-export enum LoadMoreDirection {
-  Backwards,
-  Forwards,
-  Around,
-}
+import { LoadMoreDirection } from './types'
 
 type Props = {
   ref?: RefObject<HTMLDivElement>
@@ -48,14 +43,6 @@ type Props = {
 const DEFAULT_LIST_SELECTOR = '.listitem'
 const DEFAULT_PRELOAD_BACKWARDS = 20
 const DEFAULT_SENSITIVE_AREA = 800
-
-// debounce,
-// g type
-type AnyToVoidFunction = (...args: any[]) => void
-type NoneToVoidFunction = () => void
-type AnyFunction = (...args: any[]) => any
-
-// module: schedulers
 
 type Scheduler = typeof requestAnimationFrame
 
