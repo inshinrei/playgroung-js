@@ -165,11 +165,10 @@ export function InfiniteScroll({
   ])
 
   const handleScroll = useLastCallback((e: React.UIEvent<HTMLDivElement>) => {
-    if (loadMoreBackwards && loadMoreForwards) {
+    if (loadMoreForwards && loadMoreBackwards) {
       let { isScrollTopJustUpdated, currentAnchor, currentAnchorTop } =
         stateRef.current
       let listItemElements = stateRef.current.listItemElements!
-
       if (isScrollTopJustUpdated) {
         stateRef.current.isScrollTopJustUpdated = false
         return
@@ -178,7 +177,6 @@ export function InfiniteScroll({
       let scrollContainer = scrollContainerClosest
         ? containerRef.current!.closest<HTMLDivElement>(scrollContainerClosest)!
         : containerRef.current!
-
       let { scrollTop, scrollHeight, offsetHeight } = scrollContainer
       let top = listLength ? listItemElements[0].offsetTop : 0
       let isNearTop = scrollTop <= top + sensitiveArea
@@ -208,7 +206,6 @@ export function InfiniteScroll({
           }
         }
       }
-
       if (isNearBottom) {
         let nextAnchor = listItemElements[listLength - 1]
         if (nextAnchor) {
@@ -229,7 +226,6 @@ export function InfiniteScroll({
           }
         }
       }
-
       if (!isUpdated) {
         if (currentAnchor?.offsetParent) {
           stateRef.current.currentAnchorTop =
@@ -369,6 +365,7 @@ export function useInfiniteScroll<ListId extends string | number>(
           ? viewportIds[viewportIds.length - 1]
           : viewportIds[0]
         : undefined
+      console.debug('request get more: ', direction, viewportIds, offsetId)
       if (!listIds) {
         if (loadMoreBackwards) {
           loadMoreBackwards({ offsetId })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { RecentsList } from './bin-but-not-binary/playg/InfiniteList'
+import { RecentsList } from './bin-but-not-binary/playg/ChatsList'
 
 const data = Array.from({ length: 1000 }).fill(Math.random().toString())
 
