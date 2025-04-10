@@ -419,6 +419,7 @@ function getViewportSlice<ListId extends string | number>(
 ) {
   let { length } = sourceIds
   console.debug('offsetId: ', offsetId)
+  console.debug('sourceIds: ', sourceIds)
   let index = offsetId ? sourceIds.indexOf(offsetId) : 0
   console.debug('index: ', index)
   let isForwards = direction === LoadMoreDirection.Forwards
@@ -438,6 +439,7 @@ function getViewportSlice<ListId extends string | number>(
       areAllLocal = to <= length - 1
       break
   }
+  console.debug('getViewportSlice: ', index, from, to, newViewportIds)
   return {
     newViewportIds,
     areSomeLocal,
