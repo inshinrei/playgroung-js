@@ -424,6 +424,8 @@ function getViewportSlice<ListId extends string | number>(
   console.debug('index: ', index)
   let isForwards = direction === LoadMoreDirection.Forwards
   let indexForDirection = isForwards ? index : index + 1 || length
+  console.debug('indexForDirection: ', indexForDirection)
+  indexForDirection += 30
   let from = Math.max(0, indexForDirection - listSlice)
   let to = indexForDirection + listSlice - 1
   let newViewportIds = sourceIds.slice(Math.max(0, from), to + 1)
