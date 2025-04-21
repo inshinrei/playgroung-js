@@ -1,14 +1,13 @@
 import React from 'react'
-import { RecentsList } from './bin-but-not-binary/playg/ChatsList'
-
-const data = Array.from({ length: 1000 }).fill(Math.random().toString())
+import { add } from './bin-but-not-binary/indexeddb/main'
 
 function App() {
-  return (
-    <div>
-      <RecentsList entries={data} />
-    </div>
-  )
+  React.useEffect(() => {
+    setTimeout(() => {
+      add('some string')
+    }, 2000)
+  }, [])
+  return <div></div>
 }
 
 export default App
