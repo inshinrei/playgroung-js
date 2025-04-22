@@ -7,6 +7,7 @@ function App() {
       add('some string')
     }, 2000)
   }, [])
+  
   return <div></div>
 }
 
