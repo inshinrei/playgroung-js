@@ -79,6 +79,7 @@ export function InfiniteScroll({
     if (!onLoadMore) {
       return []
     }
+
     return [
       debounce(
         (noScroll = false) => {
