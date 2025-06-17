@@ -41,7 +41,7 @@ export function RecentsList({
         <div
           style={{ top: offsetTop + 'px' }}
           className={`ListItem ${styles.item}`}
-        >{`${id} ${offsetTop}`}</div>
+        >{`${i} index ${id} ${offsetTop}`}</div>
       )
     })
   }
@@ -49,7 +49,7 @@ export function RecentsList({
   return (
     <InfiniteScroll
       onLoadMore={getMore}
-      entries={viewportIds}
+      items={viewportIds}
       ref={containerRef}
       maxHeight={listHeight + archiveHeight}
       preloadBackwards={DEFAULT_LIST_SLICE}

@@ -1,28 +1,14 @@
 import React from 'react'
+import { RecentsList } from './bin-but-not-binary/playg/ChatsList'
 
-function useStateRef(value) {
-  const ref = React.useRef()
-  ref.current = value
-  console.debug('useStateRef run')
-  return ref
-}
+const data = Array.from({ length: 1000 })
+  .fill(null)
+  .map(() => (Math.random() * 100000).toString())
 
 function App() {
-  const ref = useStateRef({ value: 0 })
-  const [state, setState] = React.useState(0)
-
-  console.debug(state, ref.current)
-
   return (
     <div>
-      <div
-        onClick={() => {
-          setState((prevState) => prevState + 1)
-          ref.current.value += 1
-        }}
-      >
-        click
-      </div>
+      <RecentsList entries={data} />
     </div>
   )
 }
