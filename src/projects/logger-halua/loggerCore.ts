@@ -1,8 +1,8 @@
 import type { Handler, Logger, LoggerOptions } from './types'
 import { Level } from './types'
 
-class LoggerCore implements Logger {
-  private handler: Handler = self.console
+export class LoggerCore implements Logger {
+  private handler: Handler = self?.console || window?.console
   private dateGetter: null | (() => string | number) = null
   private readonly options: LoggerOptions = {}
 
@@ -13,7 +13,6 @@ class LoggerCore implements Logger {
     ['error', Level.Error],
   ])
 
-  // should pass handler, min level to log
   constructor(
     handler?: Handler | null | undefined,
     options: LoggerOptions = {},
@@ -22,7 +21,7 @@ class LoggerCore implements Logger {
       this.handler = handler
     }
 
-    if (options?.dateGetter) {
+    if (options.dateGetter) {
       this.dateGetter = options.dateGetter
       delete options.dateGetter
     }
@@ -35,17 +34,21 @@ class LoggerCore implements Logger {
     // throw error if handler is not full
   }
 
-  public New(handler: Handler, options?: LoggerOptions): this {
+  public New(
+    handler: Handler = this.handler,
+    options: LoggerOptions = this.options,
+  ): Logger {
     return new LoggerCore(handler, options)
   }
 
-  public With(msg: string, ...args: any[]) {
+  public With(msg: string, ...args: any[]): Logger {
     let postfix = this.options.postfix
       ? `${this.options.postfix} ${this.composeMsgWithArgs(msg, ...args)}`
       : this.composeMsgWithArgs(msg, ...args)
     return new LoggerCore(this.handler, {
       postfix,
       dateGetter: this.dateGetter,
+      minLevel: this.options.minLevel,
     })
   }
 
@@ -176,5 +179,3 @@ class LoggerCore implements Logger {
     return true
   }
 }
-
-export const halua = new LoggerCore()

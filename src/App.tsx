@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react'
 import { CastMain } from './projects/cast/main'
-import { halua as ha } from './projects/logger-halua/loggerCore'
-import { Level } from './projects/logger-halua/types'
-
-const halua = ha.New(null, { minLevel: Level.Debug })
+import { halua } from './projects/logger-halua'
 
 function App() {
   useEffect(() => {
