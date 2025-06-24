@@ -45,8 +45,6 @@ class CoreLogger {
       result,
     )
 
-    console.debug(args)
-
     this.driver.debug(result)
   }
 
