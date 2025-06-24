@@ -19,6 +19,8 @@ export interface Logger {
 
 export interface LoggerOptions {
   minLevel?: Level
+  postfix?: string
+  dateGetter?: (getter: () => string | number) => void
 }
 
 export enum Level {

@@ -1,8 +1,7 @@
 import type { Handler, Logger, LoggerOptions } from './types'
 import { Level } from './types'
 
-// export not needed
-export class LoggerCore implements Logger {
+class LoggerCore implements Logger {
   private handler: Handler = self.console
   private dateGetter: null | (() => string | number) = null
   private readonly options: LoggerOptions = {}
@@ -23,6 +22,11 @@ export class LoggerCore implements Logger {
       this.handler = handler
     }
 
+    if (options?.dateGetter) {
+      this.dateGetter = options.dateGetter
+      delete options.dateGetter
+    }
+
     this.options = {
       ...this.options,
       ...options,
@@ -31,12 +35,18 @@ export class LoggerCore implements Logger {
     // throw error if handler is not full
   }
 
-  public New(handler: Handler) {
-    return new LoggerCore(handler)
+  public New(handler: Handler, options?: LoggerOptions): this {
+    return new LoggerCore(handler, options)
   }
 
   public With(msg: string, ...args: any[]) {
-    return new LoggerCore(this.handler)
+    let postfix = this.options.postfix
+      ? `${this.options.postfix} ${this.composeMsgWithArgs(msg, ...args)}`
+      : this.composeMsgWithArgs(msg, ...args)
+    return new LoggerCore(this.handler, {
+      postfix,
+      dateGetter: this.dateGetter,
+    })
   }
 
   public debug(msg: string, ...args: any[]) {
@@ -82,6 +92,9 @@ export class LoggerCore implements Logger {
   ): void {
     let value = msg
     value = this.composeMsgWithArgs(value, ...args)
+    if (this.options.postfix) {
+      value = this.appendValue(this.options.postfix, value)
+    }
 
     let level: string = this.levelMapping.get(to)!
 
@@ -163,3 +176,5 @@ export class LoggerCore implements Logger {
     return true
   }
 }
+
+export const halua = new LoggerCore()
