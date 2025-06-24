@@ -8,10 +8,9 @@ function App() {
   useEffect(() => {
     // halua.debug('message')
     // halua.debug('second message', 'count', 2, 'somethingElse', 'aboba')
-
+    haluaBeta.setDateGetter(() => performance.now())
     haluaBeta.debug('message')
-    haluaBeta.assert(
-      false,
+    haluaBeta.debug(
       'second message',
       'count',
       2,

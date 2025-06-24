@@ -1,15 +1,32 @@
-import { Driver, Level, Logger } from './types'
+import { Handler, Level, Logger } from './types'
 
 // export not needed
 export class LoggerCore implements Logger {
-  driver: Driver
+  private handler: Handler = self.console
+  private dateGetter: null | (() => string | number) = null
 
-  // should pass driver, min level to log
-  constructor() {
-    // duct
-    this.driver = self.console
+  private readonly levelMapping = new Map([
+    ['debug', Level.Debug],
+    ['info', Level.Info],
+    ['warn', Level.Warn],
+    ['error', Level.Error],
+  ])
 
-    // throw error if driver is not full
+  // should pass handler, min level to log
+  constructor(handler?: Handler, options = {}) {
+    if (handler) {
+      this.handler = handler
+    }
+
+    // throw error if handler is not full
+  }
+
+  public New(handler: Handler) {
+    return new LoggerCore(handler)
+  }
+
+  public With(msg: string, ...args: any[]) {
+    return new LoggerCore(this.handler)
   }
 
   public debug(msg: string, ...args: any[]) {
@@ -34,6 +51,14 @@ export class LoggerCore implements Logger {
     }
   }
 
+  public setHandler(handler: Handler) {
+    this.handler = handler
+  }
+
+  public setDateGetter(getter: () => string | number): void {
+    this.dateGetter = getter
+  }
+
   private log(
     to: 'debug' | 'info' | 'warn' | 'error',
     msg: string,
@@ -42,16 +67,10 @@ export class LoggerCore implements Logger {
     let value = msg
     value = this.composeMsgWithArgs(value, ...args)
 
-    // move map to class body
-    let level: string = new Map([
-      ['debug', Level.Debug],
-      ['info', Level.Info],
-      ['warn', Level.Warn],
-      ['error', Level.Error],
-    ]).get(to)!
+    let level: string = this.levelMapping.get(to)!
 
     value = this.formatWithDate(this.formatWithLevel(level, value))
-    this.driver[to](value)
+    this.handler[to](value)
   }
 
   private composeMsgWithArgs(msg: string, ...args: any[]) {
@@ -60,20 +79,20 @@ export class LoggerCore implements Logger {
     }
 
     let totalMsg = msg
-    let currKey = ''
+    let key = ''
 
     for (let arg of args) {
-      if (!currKey) {
-        currKey = arg
+      if (!key) {
+        key = arg
         continue
       }
 
-      totalMsg = this.appendValue(`${currKey}=${arg}`, totalMsg)
-      currKey = ''
+      totalMsg = this.appendValue(`${key}="${arg}"`, totalMsg)
+      key = ''
     }
 
-    if (currKey) {
-      totalMsg = this.appendValue(`${currKey}=${undefined}`, totalMsg)
+    if (key) {
+      totalMsg = this.appendValue(`${key}=${undefined}`, totalMsg)
     }
 
     return totalMsg
@@ -84,6 +103,13 @@ export class LoggerCore implements Logger {
   }
 
   private formatWithDate(msg: string): string {
+    if (this.dateGetter) {
+      try {
+        return this.shiftValue(this.dateGetter().toString(), msg)
+      } catch (_) {
+        this.err('date getter catches an error, check your date getter func')
+      }
+    }
     return this.shiftValue(this.getDateInLocaleString(), msg)
   }
 

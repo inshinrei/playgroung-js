@@ -1,4 +1,4 @@
-export interface Driver {
+export interface Handler {
   debug: (msg: string) => void
   info: (msg: string) => void
   warn: (msg: string) => void
@@ -13,6 +13,8 @@ export interface Logger {
   warn: LoggerFn
   err: LoggerFn
   assert: (value: boolean, msg: string, ...args: any[]) => void
+  setHandler: (handler: Handler) => void
+  setDateGetter: (getter: () => string | number) => void
 }
 
 export enum Level {
