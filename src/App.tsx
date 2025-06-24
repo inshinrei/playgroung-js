@@ -1,23 +1,20 @@
 import React, { useEffect } from 'react'
 import { CastMain } from './projects/cast/main'
 import { LoggerCore } from './projects/logger-halua/loggerCore'
+import { Level } from './projects/logger-halua/types'
 
-const haluaBeta = new LoggerCore()
+const halua = new LoggerCore(null, { minLevel: Level.Debug })
 
 function App() {
   useEffect(() => {
     // halua.debug('message')
     // halua.debug('second message', 'count', 2, 'somethingElse', 'aboba')
-    haluaBeta.setDateGetter(() => performance.now())
-    haluaBeta.debug('message')
-    haluaBeta.debug(
-      'second message',
-      'count',
-      2,
-      'somethingElse',
-      'aboba',
-      'none',
-    )
+    halua.setDateGetter(() => performance.now())
+    halua.debug('message')
+    halua.debug('second message', 'count', 2, 'somethingElse', 'aboba', 'none')
+    halua.info('info')
+    halua.warn('warn')
+    halua.err('error')
   })
 
   return (

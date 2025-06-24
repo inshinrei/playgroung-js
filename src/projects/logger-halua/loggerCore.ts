@@ -1,9 +1,11 @@
-import { Handler, Level, Logger } from './types'
+import type { Handler, Logger, LoggerOptions } from './types'
+import { Level } from './types'
 
 // export not needed
 export class LoggerCore implements Logger {
   private handler: Handler = self.console
   private dateGetter: null | (() => string | number) = null
+  private readonly options: LoggerOptions = {}
 
   private readonly levelMapping = new Map([
     ['debug', Level.Debug],
@@ -13,9 +15,17 @@ export class LoggerCore implements Logger {
   ])
 
   // should pass handler, min level to log
-  constructor(handler?: Handler, options = {}) {
+  constructor(
+    handler?: Handler | null | undefined,
+    options: LoggerOptions = {},
+  ) {
     if (handler) {
       this.handler = handler
+    }
+
+    this.options = {
+      ...this.options,
+      ...options,
     }
 
     // throw error if handler is not full
@@ -30,15 +40,21 @@ export class LoggerCore implements Logger {
   }
 
   public debug(msg: string, ...args: any[]) {
-    this.log('debug', msg, ...args)
+    if (this.canLogByMinLevelRestriction(Level.Debug)) {
+      this.log('debug', msg, ...args)
+    }
   }
 
   public info(msg: string, ...args: any[]) {
-    this.log('info', msg, ...args)
+    if (this.canLogByMinLevelRestriction(Level.Info)) {
+      this.log('info', msg, ...args)
+    }
   }
 
   public warn(msg: string, ...args: any[]) {
-    this.log('warn', msg, ...args)
+    if (this.canLogByMinLevelRestriction(Level.Warn)) {
+      this.log('warn', msg, ...args)
+    }
   }
 
   public err(msg: string, ...args: any[]) {
@@ -124,5 +140,26 @@ export class LoggerCore implements Logger {
   private getDateInLocaleString(): string {
     let d = new Date()
     return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`
+  }
+
+  private canLogByMinLevelRestriction(level: Level): boolean {
+    const { minLevel } = this.options
+    if (!minLevel || level === Level.Error) {
+      return true
+    }
+
+    if (level === Level.Warn) {
+      return minLevel !== Level.Error
+    }
+
+    if (level === Level.Info) {
+      return minLevel !== Level.Warn && minLevel !== Level.Error
+    }
+
+    if (level === Level.Debug) {
+      return minLevel === Level.Debug
+    }
+
+    return true
   }
 }

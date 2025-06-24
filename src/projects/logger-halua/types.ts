@@ -17,6 +17,10 @@ export interface Logger {
   setDateGetter: (getter: () => string | number) => void
 }
 
+export interface LoggerOptions {
+  minLevel?: Level
+}
+
 export enum Level {
   Debug = 'DEBUG',
   Info = 'INFO',
