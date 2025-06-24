@@ -20,7 +20,15 @@ export interface Logger {
 export interface LoggerOptions {
   minLevel?: Level
   postfix?: string
+  pretty?: boolean
   dateGetter?: (() => string | number) | null | undefined
+}
+
+interface Log {
+  msg: string
+  level: Level
+  timestamp: string
+  variables: Record<string, any>
 }
 
 export enum Level {

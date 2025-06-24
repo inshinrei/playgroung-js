@@ -10,8 +10,11 @@ function App() {
     halua.debug('second message', 'count', 2, 'somethingElse', 'aboba', 'none')
     halua.info('info')
 
-    let logger = halua.With('some constant operation', 'abobikiCount', 35)
+    // let logger = halua.New(JSONHandler(self.console.log), { pretty: true })
+    let logger = halua.New(null, { pretty: true })
     logger.debug('message')
+    logger.warn('warning')
+    logger.err('error')
     logger.debug('second message', 'count', 2, 'somethingElse', 'aboba', 'none')
     logger.info('info')
 
