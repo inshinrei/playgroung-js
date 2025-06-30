@@ -1,4 +1,4 @@
-import { Handler, Level, Log } from './types'
+import { Handler, Level, Log } from "./types"
 
 interface ConsoleLogHandler extends Handler {}
 
@@ -10,9 +10,7 @@ interface ConsoleLogHandlerConsole {
   assert: (c: boolean, ...args: any[]) => void
 }
 
-export function ConsoleHandler(
-  c: ConsoleLogHandlerConsole = console,
-): ConsoleLogHandler {
+export function ConsoleHandler(c: ConsoleLogHandlerConsole = console): ConsoleLogHandler {
   return new (class ConsoleLog implements ConsoleLogHandler {
     debug(log: Log) {
       c.debug(...this.composeArgs({ ...log, level: Level.Debug }))
@@ -36,23 +34,27 @@ export function ConsoleHandler(
 
     private composeArgs(log: Log): Array<any> {
       let args: Array<any> = []
-      args.push(log.timestamp)
-      args.push(log.level)
-      args.push(`${log.message}`)
+      args.push(this.prepareDate(log.timestamp))
+      args.push(` ${log.level}`)
+      args.push(` ${log.message}`)
       if (Object.keys(log.variables).length) {
         args.push(...this.composeVarsArgs(log.variables))
       }
-      console.debug('args ', args)
       return args
     }
 
     private composeVarsArgs(data: Record<string, any>): Array<any> {
       let args: Array<any> = []
       for (let key in data) {
-        let currArgs = [`${key}=`, data[key]]
+        let currArgs = [` ${key}=`, data[key]]
         args.push(...currArgs)
       }
       return args
+    }
+
+    private prepareDate(t: number) {
+      let d = new Date(t)
+      return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`
     }
   })()
 }

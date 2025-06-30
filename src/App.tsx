@@ -9,7 +9,7 @@ function App() {
     // const logger = halua.New(TextHandler)
     // logger.debug('debug with text')
     halua.debug('message')
-    // halua.debug('second message', 'count', 2, 'somethingElse', 'aboba', 'none')
+    halua.debug('second message', 'count', 2, 'somethingElse', 'aboba', 'none')
     // halua.info('info')
 
     // let logger = halua.New(JSONHandler(self.console.log), { pretty: true })

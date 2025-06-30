@@ -1,4 +1,4 @@
-import { Halua } from './main'
-import { ConsoleHandler } from './handlers/ConsoleHandler'
+import { Halua } from "./main"
+import { ConsoleHandler } from "./handlers/ConsoleHandler"
 
-export const halua = new Halua(ConsoleHandler(self.console))
+export const halua = new Halua(ConsoleHandler())
