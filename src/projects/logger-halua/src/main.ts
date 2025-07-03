@@ -40,6 +40,7 @@ export class Halua implements HaluaLogger {
       message,
       timestamp: Date.now(),
       variables: {},
+      args: [],
     }
     this.parseArgs(log, args)
     if (field === "assert") {
@@ -51,12 +52,10 @@ export class Halua implements HaluaLogger {
   }
 
   private parseArgs(log: Log, args: any[]) {
-    let vars: Record<string, any> = {}
     let currKey = ""
-    let key = 0
     for (const arg of args) {
       if (currKey) {
-        vars[currKey] = arg
+        log.variables[currKey] = arg
         currKey = ""
         continue
       }
@@ -66,13 +65,11 @@ export class Halua implements HaluaLogger {
         continue
       }
 
-      log.message += ` ${arg}`
+      log.args!.push(arg)
     }
 
     if (currKey) {
       log.message += ` ${currKey}`
     }
-
-    return vars
   }
 }
