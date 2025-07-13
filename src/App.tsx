@@ -56,7 +56,7 @@ function App() {
       NewWebBrowserConsoleHandler(self.console, { pretty: true }),
     ])
     logger.info('poooo')
-    logger.debug(true, 'pizda', 'count', { prop: 'val' })
+    logger.debug(true, 'fshafhaskjf ', 'count', { prop: 'val' })
     logger.info(
       window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: light)').matches,
@@ -69,7 +69,7 @@ function App() {
     }
     logger.info(1)
     logger.info(2, ' fhashf safh sa')
-    
+
     logger.debug()
     logger.warn()
     logger.error()
