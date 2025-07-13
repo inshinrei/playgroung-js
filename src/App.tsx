@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { CastMain } from './projects/cast/main'
 import {
   halua,
-  JSONHandler,
-  WebBrowserConsoleHandler,
+  NewJSONHandler,
+  NewTextHandler,
+  NewWebBrowserConsoleHandler,
 } from '../../projects/inshinrei/halua/src'
 
 function App() {
@@ -44,20 +45,35 @@ function App() {
     // })
     // logger6.debug('logger6  debug message')
     // logger6.error('logger6   message')
-    let loggerWEb = halua.New(WebBrowserConsoleHandler(self.console))
-    let loggerJSON = halua.New(JSONHandler(self.console.log))
+    let loggerWEb = halua.New(NewWebBrowserConsoleHandler(self.console))
+    let loggerJSON = halua.New(NewJSONHandler(self.console.log))
 
-    function ab() {
-      let i = 0
-      let s = performance.now()
-      while (i < 100_000) {
-        loggerJSON.info('aboba')
-        i += 1
-      }
-      console.log('took ', performance.now() - s)
+    loggerJSON.info('App loaded')
+
+    let logger = halua.New([
+      NewJSONHandler(self.console.log),
+      NewTextHandler(self.console.log),
+      NewWebBrowserConsoleHandler(self.console, { pretty: true }),
+    ])
+    logger.info('poooo')
+    logger.debug(true, 'pizda', 'count', { prop: 'val' })
+    logger.info(
+      window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: light)').matches,
+    )
+    if (
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
+      // dark mode
     }
-
-    ab()
+    logger.info(1)
+    logger.info(2, ' fhashf safh sa')
+    
+    logger.debug()
+    logger.warn()
+    logger.error()
+    logger.info()
     // console 100_000 4889.900000095367
     // JSON 100_000    5929.099999904633
     // web 100_000     3630.800000190735
@@ -80,7 +96,7 @@ function App() {
     //   'none',
     // )
     // logger2.info('info')
-  }, [])
+  })
 
   return (
     <div>
