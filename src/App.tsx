@@ -42,6 +42,13 @@ function App() {
       .withMessageFormat('[some prefix] %t %l %a > %w')
     textLogger.info('infoooo')
     textLogger.With('aboba').info('infooo abobbba')
+
+    let webLogger = halua.New(
+      NewWebConsoleHandler(self.console, {
+        messageFormat: '[aboba] %t - %l : %a',
+      }),
+    )
+    webLogger.info('keka')
     // console 100_000 4889.900000095367
     // JSON 100_000    5929.099999904633
     // web 100_000     3630.800000190735
