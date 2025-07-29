@@ -53,11 +53,6 @@ function App() {
     // JSON 100_000    5929.099999904633
     // web 100_000     3630.800000190735
 
-    // let logger2 = logger.With(
-    //   'not some constant operation',
-    //   'NonabobikiCount',
-    //   40,
-    // )
     // logger2.debug('message')
     // logger2.debug(
     //   'second message',
