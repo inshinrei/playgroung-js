@@ -17,23 +17,6 @@ function App() {
     logger2.error('aac')
     // halua.debug('message')
     // halua.debug('second message', 'count', 2, 'somethingElse', 'aboba')
-    // /if (this.options.pretty) {
-    //   let colorKey: ColorKey =
-    //     log.level === Level.Debug
-    //       ? "purple"
-    //       : log.level === Level.Info
-    //         ? "blue"
-    //         : log.level === Level.Warn
-    //           ? "orange"
-    //           : "red"
-    //   return [
-    //     `%c${this.prepareDate(log.timestamp)} %c${log.level}%c`,
-    //     `color:${this.options.customColors?.get("grey") || this.colors.get("grey")}`,
-    //     `color:${this.options.customColors?.get(colorKey) || this.colors.get(colorKey)};`,
-    //     `color:${this.options.customColors?.get("green") || this.colors.get("green")}`,
-    //     ...totalArgs,
-    //   ]
-    // }/
     // halua.debug('message', 'aaaa')
     //
     // let logger = halua.New([
