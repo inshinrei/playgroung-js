@@ -18,7 +18,7 @@ function App() {
     // halua.debug('message')
     // halua.debug('second message', 'count', 2, 'somethingElse', 'aboba')
     // halua.debug('message', 'aaaa')
-    //
+    
     // let logger = halua.New([
     //   NewWebConsoleHandler(self.console, {
     //     pretty: true,
