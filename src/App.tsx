@@ -1,24 +1,35 @@
 import React, { useEffect } from 'react'
 import { CastMain } from './projects/cast/main'
-import { halua, NewWebConsoleHandler } from '../../projects/inshinrei/halua/src'
+import {
+  halua,
+  NewJSONHandler,
+  NewTextHandler,
+  NewWebConsoleHandler,
+} from '../../projects/inshinrei/halua/src'
 
 function App() {
   useEffect(() => {
-    let logger = halua.New(
-      NewWebConsoleHandler(self.console, {
-        pretty: false,
-        messageFormat: '[prefix] %t - %l :: %a > %w',
-      }),
-    )
-    let logger2 = logger.With('count', 1)
-    logger2.info('aboba')
-    logger2.debug('aaaaa')
-    logger2.warn('bbbb')
-    logger2.error('aac')
+    let logger = halua.New([
+      NewTextHandler(self.console.info),
+      NewWebConsoleHandler(self.console),
+      NewJSONHandler(self.console.info),
+      NewWebConsoleHandler(self.console, { pretty: true, exact: 'INFO+5' }),
+    ])
+    logger.info('some message', [])
+    logger.logTo('INFO+5', 'pzed')
+
+    logger.info('some message', [])
+    logger.logTo('INFO+5', 'pzed')
+
+    logger.appendHandler(NewTextHandler(self.console.warn))
+
+    logger.info('some message', [])
+    logger.logTo('INFO+5', 'pzed')
     // halua.debug('message')
+
     // halua.debug('second message', 'count', 2, 'somethingElse', 'aboba')
     // halua.debug('message', 'aaaa')
-    
+
     // let logger = halua.New([
     //   NewWebConsoleHandler(self.console, {
     //     pretty: true,
