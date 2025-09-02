@@ -39,22 +39,7 @@ function App() {
     // logger2.debug('logger 2 debug message')
     // logger2.info('logger 2 info')
     // logger2.warn('logger 2 warn')
-    // logger2.error('logger 2 error')
-    //
-    // logger.debug('logger 1 info')
-    // logger2.info('logger 2 attempts to log')
-    // let logger3 = logger2.New(NewTextHandler(self.console.log))
-    // logger3.assert(false, 'ASSERTION')
-    // logger3.assert(true, 'WOW')
-    // logger3.info({
-    //   prop: {
-    //     nested: {
-    //       val: new Map([['keka', 1]]),
-    //     },
-    //   },
-    // })
-    //
-    // let textLogger = halua
+    // logger2.error('logger 2
     //   .New(NewTextHandler(self.console.log))
     //   .withMessageFormat('[some prefix] %t %l %a > %w')
     // textLogger.info('infoooo')
