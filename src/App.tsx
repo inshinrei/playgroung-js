@@ -25,10 +25,6 @@ function App() {
 
     logger.info('some message', [])
     logger.logTo('INFO+5', 'pzed')
-    // halua.debug('message')
-
-    // halua.debug('second message', 'count', 2, 'somethingElse', 'aboba')
-    // halua.debug('message', 'aaaa')
   })
 
   return (
