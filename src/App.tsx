@@ -20,11 +20,6 @@ function App() {
 
     logger.info('some message', [])
     logger.logTo('INFO+5', 'pzed')
-
-    logger.appendHandler(NewTextHandler(self.console.warn))
-
-    logger.info('some message', [])
-    logger.logTo('INFO+5', 'pzed')
   })
 
   return (
