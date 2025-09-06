@@ -17,8 +17,6 @@ function App() {
     ])
     logger.info('some message', [])
     logger.logTo('INFO+5', 'pzed')
-
-    logger.info('some message', [])
   })
 
   return (
