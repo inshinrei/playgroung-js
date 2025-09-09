@@ -13,7 +13,6 @@ function App() {
       NewTextHandler(self.console.info),
       NewWebConsoleHandler(self.console),
       NewJSONHandler(self.console.info),
-      NewWebConsoleHandler(self.console, { pretty: true, exact: 'INFO+5' }),
     ])
     logger.info('some message', [])
     logger.logTo('INFO+5', 'pzed')
