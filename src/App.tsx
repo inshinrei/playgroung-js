@@ -14,7 +14,6 @@ function App() {
       NewWebConsoleHandler(self.console),
       NewJSONHandler(self.console.info),
     ])
-
     logger.info('some message', [])
     logger.logTo('INFO+5', 'pzed')
   })
