@@ -1,12 +1,8 @@
 export function main() {
-  let subject = Array.from({ length: 20_000 }).fill({ prop: 'value' })
-
-  let t1 = performance.now()
-  for (let i of subject) {
-    run(i)
-  }
-
-  console.log(performance.now() - t1)
+  const obj = { prop: 'value', prop1: 'v1' }
+  let g = unpack(obj)
+  delete obj.prop
+  console.log(g.next().value)
 }
 
 function run(...args: any[]) {
