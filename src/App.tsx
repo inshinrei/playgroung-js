@@ -7,20 +7,30 @@ import {
   NewWebConsoleHandler,
 } from '../../projects/inshinrei/halua/src'
 
+let logger = halua.New([
+  NewTextHandler(self.console.info),
+  NewWebConsoleHandler(self.console),
+  NewJSONHandler(self.console.info),
+])
+
 function App() {
   useEffect(() => {
-    let logger = halua.New([
-      NewTextHandler(self.console.info),
-      NewWebConsoleHandler(self.console),
-      NewJSONHandler(self.console.info),
-    ])
     logger.info('some message', [])
     logger.logTo('INFO+5', 'pzed')
   })
 
+  function run() {
+    let arr = Array.from({ length: 1000 }).fill({ value: 'propov' })
+    for (let v of arr) {
+      logger.info(v)
+    }
+    console.log('done', arr.length)
+  }
+
   return (
     <div>
       <CastMain />
+      <div onClick={run}>click</div>
     </div>
   )
 }
