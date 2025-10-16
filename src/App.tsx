@@ -6,6 +6,7 @@ import {
   NewTextHandler,
   NewWebConsoleHandler,
 } from '../../projects/inshinrei/halua/src'
+import { main } from './sub_1'
 
 let logger = halua.New([
   NewTextHandler(self.console.info),
@@ -15,8 +16,7 @@ let logger = halua.New([
 
 function App() {
   useEffect(() => {
-    logger.info('some message', [])
-    logger.logTo('INFO+5', 'pzed')
+    main()
   })
 
   function run() {
@@ -30,7 +30,7 @@ function App() {
   return (
     <div>
       <CastMain />
-      <div onClick={run}>click</div>
+      <div onClick={main}>click</div>
     </div>
   )
 }
