@@ -21,24 +21,22 @@ class Halua {
     info(...args: any[]) {
         const gen = this.run(...args)
         let v
+        let i = 0
         while (!v?.done) {
-            v = gen.next()
-            console.log(this.handlers.map((h) => h.queue.size))
+            v = gen.next(i++)
+            if (i === 10) {
+                gen.return('string')
+            }
         }
         console.log('done')
     }
 
     *run(...args: any[]) {
-        for (let v of args) {
-            // while argsgen.next()
-            for (let h of this.handlers) {
-                // yield argument computation
-                yield h.appendArg(v)
-            }
+        while (true) {
+            let thing = yield ''
+            console.log(thing)
         }
-        for (let h of this.handlers) {
-            h.send()
-        }
+        console.log('returs')
     }
 }
 
