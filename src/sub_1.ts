@@ -20,13 +20,16 @@ class Halua {
 
     info(...args: any[]) {
         const gen = this.run(...args)
+        const gens = []
+        for (let h of this.handlers) {
+            gens.push(h.execute())
+        }
         let v
         let i = 0
-        while (!v?.done) {
-            v = gen.next(i++)
-            if (i === 10) {
-                gen.return('string')
-            }
+        for (let a of args) {
+            gens.forEach((g) => {
+                g.next({ type: 'arg', value: a })
+            })
         }
         console.log('done')
     }
@@ -44,6 +47,17 @@ class Handler {
     queue = new Set()
 
     some() {}
+
+    *execute() {
+        let arg = { type: 'pass', value: null }
+        while (arg.type !== 'done') {
+            if (arg.type === 'arg') {
+                this.queue.add(arg)
+            }
+            arg = yield { type: 'next' }
+        }
+        console.log(this.queue)
+    }
 
     appendArg(arg: any) {
         this.queue.add(arg)
