@@ -28,9 +28,11 @@ class Halua {
         let i = 0
         for (let a of args) {
             gens.forEach((g) => {
-                g.next({ type: 'arg', value: a })
+                const v = g.next({ type: 'arg', value: a })
+                console.log('next val', v)
             })
         }
+        gens.forEach((g) => g.next({ type: 'done' }))
         console.log('done')
     }
 
