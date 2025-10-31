@@ -37,10 +37,6 @@ class Halua {
     }
 
     *run(...args: any[]) {
-        while (true) {
-            let thing = yield ''
-            console.log(thing)
-        }
         console.log('returs')
     }
 }
