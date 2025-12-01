@@ -37,7 +37,7 @@ class Halua {
     }
 
     *run(...args: any[]) {
-        console.log('returs')
+        console.log('returns')
     }
 }
 
