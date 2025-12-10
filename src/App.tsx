@@ -1,11 +1,6 @@
 import React from 'react'
 import { CastMain } from './projects/cast/main'
-import {
-    halua,
-    NewJSONHandler,
-    NewTextHandler,
-    NewWebConsoleHandler,
-} from '../../projects/inshinrei/halua/src'
+import { halua, NewJSONHandler, NewTextHandler, NewWebConsoleHandler } from '../../projects/inshinrei/halua/src'
 import { Halua } from '../../projects/inshinrei/halua/src/main/halua'
 
 let logger = halua.New([
@@ -33,6 +28,7 @@ function App() {
                 onClick={() => {
                     let args = ['string', 123, [1, 2, 3], new WeakSet()]
                     let t = performance.now()
+
                     h.info(...args)
                     console.info('generator log:', performance.now() - t)
 
