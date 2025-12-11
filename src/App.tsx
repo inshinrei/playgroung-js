@@ -18,11 +18,11 @@ class CustomError extends Error {
 }
 
 let args = [
-    'string',
-    123,
-    [1, 2, 3],
-    new WeakSet(),
-    { prop: 'value' },
+    // 'string',
+    // 123,
+    // [1, 2, 3],
+    // new WeakSet(),
+    { prop: 'value', second: 'keka' },
     // new Error('DataError'),
     // new CustomError('Migrate'),
 ]
