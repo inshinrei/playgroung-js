@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react'
 import { CastMain } from './projects/cast/main'
-import { halua, NewJSONHandler, NewTextHandler, NewWebConsoleHandler } from '../../projects/inshinrei/halua/src'
+import {
+    halua,
+    NewJSONHandler,
+    NewTextHandler,
+    NewWebConsoleHandler,
+} from '../../projects/inshinrei/halua/src'
 import { Halua } from '../../projects/inshinrei/halua/src/main/halua'
 
 let logger = halua.New([
