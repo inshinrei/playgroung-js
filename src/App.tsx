@@ -33,14 +33,6 @@ let args = [
 ]
 
 function App() {
-    function run() {
-        let arr = Array.from({ length: 1000 }).fill({ value: 'propov' })
-        for (let v of arr) {
-            logger.info(v)
-        }
-        console.log('done', arr.length)
-    }
-
     useEffect(() => {
         let t = performance.now()
 
