@@ -22,6 +22,19 @@ class CustomError extends Error {
     }
 }
 
+function logs() {
+    let t = performance.now()
+
+    h.info(...args)
+    console.info('generator log:', performance.now() - t)
+
+    t = performance.now()
+    console.info(...args)
+    console.info('base log:', performance.now() - t)
+
+    console.info('\n\n')
+}
+
 let args = [
     'string',
     123,
@@ -34,16 +47,7 @@ let args = [
 
 function App() {
     useEffect(() => {
-        let t = performance.now()
-
-        h.info(...args)
-        console.info('generator log:', performance.now() - t)
-
-        t = performance.now()
-        console.info(...args)
-        console.info('base log:', performance.now() - t)
-
-        console.info('\n\n')
+        logs()
     })
 
     return (
@@ -52,14 +56,7 @@ function App() {
 
             <div
                 onClick={() => {
-                    let t = performance.now()
-
-                    h.info(...args)
-                    console.info('generator log:', performance.now() - t)
-
-                    t = performance.now()
-                    console.info(...args)
-                    console.info('base log:', performance.now() - t)
+                    logs()
                 }}
             >
                 log something
