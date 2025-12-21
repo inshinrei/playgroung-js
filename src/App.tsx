@@ -22,7 +22,7 @@ class CustomError extends Error {
     }
 }
 
-function logs() {
+function log() {
     let t = performance.now()
 
     h.info(...args)
@@ -47,7 +47,7 @@ let args = [
 
 function App() {
     useEffect(() => {
-        logs()
+        log()
     })
 
     return (
@@ -56,7 +56,7 @@ function App() {
 
             <div
                 onClick={() => {
-                    logs()
+                    log()
                 }}
             >
                 log something
