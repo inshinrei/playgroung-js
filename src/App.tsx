@@ -1,11 +1,6 @@
 import React, { useEffect } from 'react'
 import { CastMain } from './projects/cast/main'
-import {
-    halua,
-    NewJSONHandler,
-    NewTextHandler,
-    NewWebConsoleHandler,
-} from '../../projects/inshinrei/halua/src'
+import { halua, NewJSONHandler, NewTextHandler, NewWebConsoleHandler } from '../../projects/inshinrei/halua/src'
 import { Halua } from '../../projects/inshinrei/halua/src/main/halua'
 
 let logger = halua.New([
@@ -26,12 +21,12 @@ function log() {
     let t = performance.now()
 
     h.info(...args)
-    console.info('generator log:', performance.now() - t)
+    let gt = performance.now() - t
 
     t = performance.now()
     console.info(...args)
-    console.info('base log:', performance.now() - t)
-
+    let bt = performance.now() - t
+    console.info('log att', bt - gt)
     console.info('\n\n')
 }
 
