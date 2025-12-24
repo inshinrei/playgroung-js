@@ -14,7 +14,7 @@ let logger = halua.New([
     NewJSONHandler(self.console.info),
 ])
 
-let h = new Halua()
+let h = new Halua([])
 
 class CustomError extends Error {
     constructor(message: string) {
