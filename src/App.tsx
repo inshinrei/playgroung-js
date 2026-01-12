@@ -31,6 +31,7 @@ function log() {
     t = performance.now()
     console.info(...args)
     let bt = performance.now() - t
+
     console.info('log att', bt - gt)
     console.info('\n\n')
 }
