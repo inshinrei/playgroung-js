@@ -1,20 +1,16 @@
 import React, { useEffect } from 'react'
 import { CastMain } from './projects/cast/main'
-import {
-    halua,
-    NewJSONHandler,
-    NewTextHandler,
-    NewWebConsoleHandler,
-} from '../../projects/inshinrei/halua/src'
+import { NewConsoleHandler } from '../../projects/inshinrei/halua/src/main/handlers/ConsoleHandler'
+import { NewTextHandler } from '../../projects/inshinrei/halua/src/main/handlers/TextHandler'
+import { NewJSONHandler } from '../../projects/inshinrei/halua/src/main/handlers/JSONHandler'
 import { Halua } from '../../projects/inshinrei/halua/src/main/halua'
 
-let logger = halua.New([
+let halua = new Halua([], {})
+let h = halua.New([
     NewTextHandler(self.console.info),
-    NewWebConsoleHandler(self.console),
+    NewConsoleHandler(self.console),
     NewJSONHandler(self.console.info),
 ])
-
-let h = new Halua()
 
 class CustomError extends Error {
     constructor(message: string) {
