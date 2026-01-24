@@ -7,9 +7,18 @@ import { Halua } from '../../projects/inshinrei/halua/src/main/halua'
 
 let halua = new Halua([], {})
 let h = halua.New([
-    NewTextHandler(self.console.info),
-    NewConsoleHandler(self.console),
-    NewJSONHandler(self.console.info),
+    NewTextHandler(self.console.info, {
+        spacing: false,
+        printTimestamp: false,
+    }),
+    NewConsoleHandler(self.console, { printTimestamp: false }),
+    NewJSONHandler(
+        (v) => {
+            self.console.info(v)
+            console.assert(JSON.parse(v), 'json parsing failed')
+        },
+        { printTimestamp: false },
+    ),
 ])
 
 class CustomError extends Error {
@@ -21,15 +30,26 @@ class CustomError extends Error {
 function log() {
     let t = performance.now()
 
-    h.info(...args)
-    let gt = performance.now() - t
+    let h2 = h.New({ level: 'NOTICE' })
+    h2.info('no log')
+    h2.notice('yes log')
 
-    t = performance.now()
-    console.info(...args)
-    let bt = performance.now() - t
+    let h3 = h.New(NewTextHandler(self.console.info))
+    h3.info('2 yes log')
 
-    console.info('log att', bt - gt)
+    // t = performance.now()
+    // console.info(...args)
+    // let bt = performance.now() - t
+    //
+    // console.info('log att', bt - gt)
+    console.info('done')
     console.info('\n\n')
+
+    // let h2 = h.With('boolean', 213)
+    // h2.trace('kek')
+    //
+    // let h3 = h2.With('op', null)
+    // h3.notice('log')
 }
 
 let args = [
@@ -38,8 +58,8 @@ let args = [
     [1, 2, 3],
     new WeakSet(),
     { prop: 'value', second: 'keka' },
-    new Error('DataError'),
-    new CustomError('Migrate'),
+    // new Error('DataError'),
+    // new CustomError('Migrate'),
 ]
 
 function App() {
