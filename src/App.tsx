@@ -42,7 +42,6 @@ function log() {
     // let bt = performance.now() - t
     //
     // console.info('log att', bt - gt)
-    console.info('done')
     console.info('\n\n')
 
     // let h2 = h.With('boolean', 213)
