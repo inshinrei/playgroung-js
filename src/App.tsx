@@ -9,9 +9,8 @@ let halua = new Halua([], {})
 let h = halua.New([
     NewTextHandler(self.console.info, {
         spacing: false,
-        printTimestamp: false,
     }),
-    NewConsoleHandler(self.console, { printTimestamp: false }),
+    NewConsoleHandler(self.console, {}),
     NewJSONHandler(
         (v) => {
             self.console.info(v)
@@ -34,8 +33,9 @@ function log() {
     h2.info('no log')
     h2.notice('yes log')
 
-    let h3 = h.New(NewTextHandler(self.console.info))
-    h3.info('2 yes log')
+    let end = h2.stamp('1', 'some func')
+    end()
+    h2.stampEnd('1')
 
     // t = performance.now()
     // console.info(...args)
