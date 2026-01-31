@@ -45,7 +45,6 @@ function log() {
     console.info('\n\n')
 
     // let h2 = h.With('boolean', 213)
-    // h2.trace('kek')
     //
     // let h3 = h2.With('op', null)
     // h3.notice('log')
