@@ -56,7 +56,6 @@ let args = [
     [1, 2, 3],
     new WeakSet(),
     { prop: 'value', second: 'keka' },
-    // new Error('DataError'),
     // new CustomError('Migrate'),
 ]
 
